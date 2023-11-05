@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using sistema_receitas_backend.Migrations;
 using sistema_receitas_backend.Models;
 
 namespace sistema_receitas_backend.Controllers
@@ -20,11 +21,10 @@ namespace sistema_receitas_backend.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> List()
         {
-              return _context.Usuario != null ? 
-                          new JsonResult(await _context.Usuario.ToListAsync()) :
-                          Problem("Entity set 'sistema_receitas_backendContext.Usuario'  is null.");
+            var usuarios = await _context.Usuario.ToListAsync();
+            return Ok(usuarios);
         }
 
         // GET: api/usuario/{id}
@@ -43,16 +43,20 @@ namespace sistema_receitas_backend.Controllers
                 return NotFound();
             }
 
-            return new JsonResult(usuario);
+            return Ok(usuario);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([Bind("Id,Name,Email,Senha,Profile")] Usuario usuario)
         {
-            _context.Add(usuario);
-            await _context.SaveChangesAsync();
-            
-            return new JsonResult(usuario);
+            if (ModelState.IsValid)
+            {
+                _context.Add(usuario);
+                await _context.SaveChangesAsync();
+                return Ok(usuario);
+            }
+
+            return BadRequest(ModelState);
         }
 
 
@@ -61,27 +65,25 @@ namespace sistema_receitas_backend.Controllers
         {
             if (id != usuario.Id)
             {
-                return BadRequest();
+                return BadRequest("O ID na URL e o ID no corpo da solicitação não coincidem.");
             }
 
             if (!_context.Usuario.Any(u => u.Id == id))
             {
-                return NotFound(); 
+                return NotFound("usuario não encontrado.");
             }
 
-            _context.Entry(usuario).State = EntityState.Modified; 
+            _context.Entry(usuario).State = EntityState.Modified;
 
             try
             {
                 await _context.SaveChangesAsync();
+                return Ok(usuario);
             }
             catch (DbUpdateConcurrencyException)
             {
-               
-                return StatusCode(409); 
+                return Conflict("Ocorreu um conflito ao atualizar o usuario.");
             }
-
-            return Ok(usuario);
         }
 
         
@@ -103,7 +105,7 @@ namespace sistema_receitas_backend.Controllers
             _context.Usuario.Remove(usuario);
             await _context.SaveChangesAsync();
 
-            return new JsonResult(usuario);
+            return Ok(usuario);
         }
 
         private bool UsuarioExists(int id)

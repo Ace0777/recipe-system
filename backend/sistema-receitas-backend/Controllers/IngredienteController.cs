@@ -10,7 +10,9 @@ using sistema_receitas_backend.Models;
 
 namespace sistema_receitas_backend.Controllers
 {
-    public class IngredienteController : Controller
+    [Route("api/ingrediente")]
+    [ApiController]
+    public class IngredienteController : ControllerBase
     {
         private readonly sistema_receitas_backendContext _context;
 
@@ -19,145 +21,84 @@ namespace sistema_receitas_backend.Controllers
             _context = context;
         }
 
-        // GET: Ingredientes
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> List()
         {
-              return _context.Ingrediente != null ? 
-                          View(await _context.Ingrediente.ToListAsync()) :
-                          Problem("Entity set 'sistema_receitas_backendContext.Ingrediente'  is null.");
+            var ingredientes = await _context.Ingrediente.ToListAsync();
+            return Ok(ingredientes);
         }
 
-        // GET: Ingredientes/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null || _context.Ingrediente == null)
-            {
-                return NotFound();
-            }
+            var ingrediente = await _context.Ingrediente.FindAsync(id);
 
-            var ingrediente = await _context.Ingrediente
-                .FirstOrDefaultAsync(m => m.Id == id);
             if (ingrediente == null)
             {
                 return NotFound();
             }
 
-            return View(ingrediente);
+            return Ok(ingrediente);
         }
 
-        // GET: Ingredientes/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Ingredientes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Quantidade")] Ingrediente ingrediente)
+        public async Task<IActionResult> Create([FromBody] Ingrediente ingrediente)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(ingrediente);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Ok(ingrediente);
             }
-            return View(ingrediente);
+
+            return BadRequest(ModelState);
         }
 
-        // GET: Ingredientes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Ingrediente == null)
-            {
-                return NotFound();
-            }
-
-            var ingrediente = await _context.Ingrediente.FindAsync(id);
-            if (ingrediente == null)
-            {
-                return NotFound();
-            }
-            return View(ingrediente);
-        }
-
-        // POST: Ingredientes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Quantidade")] Ingrediente ingrediente)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Edit(int id, [FromBody] Ingrediente ingrediente)
         {
             if (id != ingrediente.Id)
             {
-                return NotFound();
+                return BadRequest("O ID na URL e o ID no corpo da solicitação não coincidem.");
             }
 
-            if (ModelState.IsValid)
+            if (!_context.Ingrediente.Any(u => u.Id == id))
             {
-                try
-                {
-                    _context.Update(ingrediente);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!IngredienteExists(ingrediente.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return NotFound("Ingrediente não encontrado.");
             }
-            return View(ingrediente);
+
+            _context.Entry(ingrediente).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(ingrediente); // Retorna o ingrediente atualizado
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return Conflict("Ocorreu um conflito ao atualizar o ingrediente.");
+            }
         }
 
-        // GET: Ingredientes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null || _context.Ingrediente == null)
             {
                 return NotFound();
             }
 
-            var ingrediente = await _context.Ingrediente
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var ingrediente = await _context.Ingrediente.FirstOrDefaultAsync(m => m.Id == id);
+
             if (ingrediente == null)
             {
                 return NotFound();
             }
 
-            return View(ingrediente);
-        }
-
-        // POST: Ingredientes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Ingrediente == null)
-            {
-                return Problem("Entity set 'sistema_receitas_backendContext.Ingrediente'  is null.");
-            }
-            var ingrediente = await _context.Ingrediente.FindAsync(id);
-            if (ingrediente != null)
-            {
-                _context.Ingrediente.Remove(ingrediente);
-            }
-            
+            _context.Ingrediente.Remove(ingrediente);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool IngredienteExists(int id)
-        {
-          return (_context.Ingrediente?.Any(e => e.Id == id)).GetValueOrDefault();
+            return Ok(ingrediente);
         }
     }
 }

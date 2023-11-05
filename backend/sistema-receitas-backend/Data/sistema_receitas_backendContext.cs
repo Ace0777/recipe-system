@@ -18,4 +18,6 @@ public class sistema_receitas_backendContext : DbContext
     public DbSet<sistema_receitas_backend.Models.Ingrediente>? Ingrediente { get; set; }
 
     public DbSet<sistema_receitas_backend.Models.Usuario>? Usuario { get; set; }
+
+    public DbSet<sistema_receitas_backend.Models.ReceitaIngrediente>? ReceitaIngrediente { get; set; }
 }

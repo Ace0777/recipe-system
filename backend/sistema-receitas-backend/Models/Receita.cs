@@ -8,7 +8,7 @@ namespace sistema_receitas_backend.Models
         public int Id { get; set; }
         public string Nome { get; set; } = "";
         public string Descricao { get; set; } = "";
-        public List<Ingrediente>? Ingredientes { get; set; } = new List<Ingrediente>();
+        public List<ReceitaIngrediente>? Ingredientes { get; set; } = new List<ReceitaIngrediente>();
         public int Curtidas { get; set; }
         public Usuario Usuario { get; set;} = new Usuario();
     }

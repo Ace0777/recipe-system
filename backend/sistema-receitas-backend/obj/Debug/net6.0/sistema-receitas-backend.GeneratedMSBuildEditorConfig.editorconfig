@@ -36,6 +36,26 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5ncmVkaWVudGVzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Nikão/Documents/DEV/sistema-receitas/backend/sistema-receitas-backend/Views/ReceitaIngredientes/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVjZWl0YUluZ3JlZGllbnRlc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nikão/Documents/DEV/sistema-receitas/backend/sistema-receitas-backend/Views/ReceitaIngredientes/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVjZWl0YUluZ3JlZGllbnRlc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nikão/Documents/DEV/sistema-receitas/backend/sistema-receitas-backend/Views/ReceitaIngredientes/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVjZWl0YUluZ3JlZGllbnRlc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nikão/Documents/DEV/sistema-receitas/backend/sistema-receitas-backend/Views/ReceitaIngredientes/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVjZWl0YUluZ3JlZGllbnRlc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nikão/Documents/DEV/sistema-receitas/backend/sistema-receitas-backend/Views/ReceitaIngredientes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVjZWl0YUluZ3JlZGllbnRlc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Nikão/Documents/DEV/sistema-receitas/backend/sistema-receitas-backend/Views/Receita/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVjZWl0YVxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

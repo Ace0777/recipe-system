@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<sistema_receitas_backendContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("MySqlConnection") ?? throw new InvalidOperationException("Connection string 'sistema_receitas_backendContext' not found.");
-    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 26))); // Substitua pela versão correta do seu MySQL/MariaDB
+    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 26)));
 });
 
 using var scope = builder.Services.BuildServiceProvider().CreateScope();
