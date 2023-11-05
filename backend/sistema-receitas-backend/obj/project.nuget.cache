@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "H5bkJpeWeXQ3/97IM9y+7DKm2LOyLtoGZHfv7wtRrDeu5ZNgMSSfgKQPDrmZewENYyhrMuF7xGU6d5yKmWqliw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Nikão\\Documents\\DEV\\sistema-receitas\\backend\\sistema-receitas-backend\\sistema-receitas-backend.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Nikão\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "C:\\Users\\Nikão\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\Nikão\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
+    "C:\\Users\\Nikão\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.5.0\\swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
+    "C:\\Users\\Nikão\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.5.0\\swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
+    "C:\\Users\\Nikão\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.5.0\\swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}
