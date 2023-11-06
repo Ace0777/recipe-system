@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using sistema_receitas_backend.Models;
+using sistema_receitas_backend.DTO.Receita;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace sistema_receitas_backend.Controllers
 {
@@ -45,17 +43,49 @@ namespace sistema_receitas_backend.Controllers
 
         // POST: api/receita
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Receita receita)
+        public async Task<IActionResult> Create([FromBody] CriarReceitaDTO criarReceitaDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Dados inválidos.");
             }
 
-            _context.Receita.Add(receita);
+            var novaReceita = new Receita
+            {
+                Nome = criarReceitaDTO.Nome,
+                Descricao = criarReceitaDTO.Descricao,
+                Curtidas = criarReceitaDTO.Curtidas,
+                UsuarioId = criarReceitaDTO.UsuarioId,
+            };
+
+            if (criarReceitaDTO.IngredientesIds.Count > 0)
+            {
+                var ingredientes = await _context.Ingrediente
+                    .Where(i => criarReceitaDTO.IngredientesIds.Contains(i.Id))
+                    .ToListAsync();
+
+                var receitaIngredientes = ingredientes.Select(ingrediente => new ReceitaIngrediente
+                {
+                    Receita = novaReceita,
+                    Ingrediente = ingrediente
+                }).ToList();
+
+                _context.ReceitaIngrediente.AddRange(receitaIngredientes);
+            }
+
+            _context.Receita.Add(novaReceita);
+
+            var options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve,
+                // Outras configurações, se necessário
+            };
+
+            var json = JsonSerializer.Serialize(novaReceita, options);
+
             await _context.SaveChangesAsync();
 
-            return Ok(receita);
+            return Ok(json);
         }
 
         // PUT: api/receita/5

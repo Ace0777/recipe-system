@@ -83,7 +83,7 @@ namespace sistema_receitas_backend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id == null || _context.Ingrediente == null)
+            if (_context.Ingrediente == null)
             {
                 return NotFound();
             }
