@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import logo from '../img/food_icon.png'
+import { Link } from 'react-router-dom';
 
 const Login = () => {
 	const [showPassword, setShowPassword] = useState(false);
@@ -16,7 +17,7 @@ const Login = () => {
 
 	return (
 		<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-			
+
 			<Form
 				name="login-form"
 				initialValues={{ remember: true }}
@@ -52,6 +53,11 @@ const Login = () => {
 				<Form.Item>
 					<Button type="primary" htmlType="submit" style={{ width: '100%' }}>
 						Entrar
+					</Button>
+				</Form.Item>
+				<Form.Item>
+					<Button type="default" style={{ width: '100%' }}>
+						<Link to="/cadastro">Cadastrar</Link>
 					</Button>
 				</Form.Item>
 			</Form>

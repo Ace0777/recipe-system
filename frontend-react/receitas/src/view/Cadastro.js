@@ -1,7 +1,9 @@
 import React from 'react';
 import { Form, Input, Button, Row, Col } from 'antd';
 import { UserOutlined, UserAddOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom'; // Importe o Link
 import logo from '../img/food_icon.png';
+
 
 const Cadastro = () => {
   const onFinish = (values) => {
@@ -72,6 +74,12 @@ const Cadastro = () => {
               Cadastrar
             </Button>
           </Form.Item>
+          <Form.Item style={{ textAlign: 'center' }}>
+            <Button type="default" style={{ width: '200px' }}>
+              <Link to="/login">Voltar</Link> {/* Link para a página de login */}
+            </Button>
+          </Form.Item>
+
         </Form>
       </Col>
     </Row>
