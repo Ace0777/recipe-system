@@ -37,8 +37,8 @@ namespace sistema_receitas_backend.Controllers
             {
                 return NotFound();
             }
-
-            return Ok(ingrediente);
+            var recebeDTO = new MostrarIngredienteDTO {Id = ingrediente.Id, Nome = ingrediente.Nome, Quantidade = ingrediente.Quantidade };
+            return Ok(recebeDTO);
         }
 
         [HttpPost]

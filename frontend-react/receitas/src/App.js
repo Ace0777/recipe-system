@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './view/Login.js'; 
 import Cadastro from './view/Cadastro.js'; 
 import CadastroReceita from './view/CadastroReceita.js';
@@ -11,6 +11,7 @@ const App = () => {
     <Router>
       <div>
         <Routes>
+          <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/principal" element={<TelaPrincipal />} />
           <Route path="/cadastro" element={<Cadastro />} />
