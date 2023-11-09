@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using sistema_receitas_backend.DTO.Usuario;
 using sistema_receitas_backend.Migrations;
 using sistema_receitas_backend.Models;
 
@@ -47,17 +48,29 @@ namespace sistema_receitas_backend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email,Senha,Profile")] Usuario usuario)
+        public async Task<IActionResult> Create([FromBody] CriarUsuarioDTO criarUsuarioDTO)
         {
             if (ModelState.IsValid)
             {
+               
+                var usuario = new Usuario
+                {
+                    Name = criarUsuarioDTO.Name,
+                    Email = criarUsuarioDTO.Email,
+                    Senha = criarUsuarioDTO.Senha
+                   
+                };
+
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
+
+                
                 return Ok(usuario);
             }
 
             return BadRequest(ModelState);
         }
+
 
 
         [HttpPut("{id}")]

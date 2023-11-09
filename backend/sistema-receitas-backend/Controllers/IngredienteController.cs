@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-
+using sistema_receitas_backend.DTO.Ingrediente;
 using sistema_receitas_backend.Models;
 
 namespace sistema_receitas_backend.Controllers
@@ -42,17 +42,27 @@ namespace sistema_receitas_backend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Ingrediente ingrediente)
+        public async Task<IActionResult> Create([FromBody] CriarIngredienteDTO criarIngredienteDTO)
         {
             if (ModelState.IsValid)
             {
+              
+                var ingrediente = new Ingrediente
+                {
+                    Nome = criarIngredienteDTO.Nome,
+                    Quantidade = criarIngredienteDTO.Quantidade
+                };
+
                 _context.Add(ingrediente);
                 await _context.SaveChangesAsync();
+
+                
                 return Ok(ingrediente);
             }
 
             return BadRequest(ModelState);
         }
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Edit(int id, [FromBody] Ingrediente ingrediente)
