@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Row, Col, InputNumber } from 'antd';
+import { Link } from 'react-router-dom';
 
 const CadastroIngrediente = ({ onIngredienteSubmit }) => {
   const [nome, setNome] = useState('');
@@ -52,7 +53,7 @@ const CadastroIngrediente = ({ onIngredienteSubmit }) => {
               <InputNumber
                 value={quantidade}
                 onChange={handleQuantidadeChange}
-                min={1} 
+                min={1}
               />
               <Button onClick={handleAdicionarQuantidade}>Adicionar</Button>
               <Button onClick={handleDiminuirQuantidade}>Diminuir</Button>
@@ -60,13 +61,17 @@ const CadastroIngrediente = ({ onIngredienteSubmit }) => {
           </Form.Item>
           <Form.Item style={{ alignContent: 'center' }}>
             <div style={{ textAlign: 'center', marginTop: '15px' }}>
-                <Button type="primary" onClick={handleSubmit} style={{ marginRight: 10 }}>
-                    Cadastrar Ingrediente
-                </Button>
-                <Button type="default" onClick={handleLimparCampos}>
-                    Limpar Campos
-                </Button>
+              <Button type="primary" onClick={handleSubmit} style={{ marginRight: 10 }}>
+                Cadastrar Ingrediente
+              </Button>
+              <Button type="default" onClick={handleLimparCampos}>
+                Limpar Campos
+              </Button>
+              <Button type="primary" style={{marginLeft: "10px"}}>
+              <Link to="/principal">Voltar</Link>
+              </Button>
             </div>
+
           </Form.Item>
         </Form>
       </Col>

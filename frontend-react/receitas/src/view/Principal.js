@@ -1,7 +1,8 @@
 import React from 'react';
-import { Input, Button, Row, Col, Card, Space, Typography, message } from 'antd';
-import { SearchOutlined, PlusOutlined, EditOutlined, LikeOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Input, Button, Row, Col, Card, Space, Typography, message, Affix } from 'antd';
+import { SearchOutlined, PlusOutlined, EditOutlined, LikeOutlined, DeleteOutlined, BookOutlined } from '@ant-design/icons';
 import logo from '../img/food_icon.png';
+import { Link } from 'react-router-dom';
 
 const TelaPrincipal = () => {
   // Exemplo de dados de receitas
@@ -27,10 +28,20 @@ const TelaPrincipal = () => {
 
   return (
     <div style={{ padding: '20px' }}>
+      <Affix offsetTop={20} style={{ position: 'absolute', left: 20, top: 20 }}>
+        <Button type="default" icon={<BookOutlined />}>
+          Minhas Receitas
+        </Button>
+      </Affix>
       <Row justify="end" gutter={16}>
         <Col>
           <Button type="primary" icon={<PlusOutlined />}>
-            Cadastrar Receita
+            <Link to="/CadastroIngrediente">Cadastrar Ingrediente</Link>
+          </Button>
+        </Col>
+        <Col>
+          <Button type="primary" icon={<PlusOutlined />}>
+            <Link to="/CadastroReceita">Cadastrar Receita</Link>
           </Button>
         </Col>
       </Row>

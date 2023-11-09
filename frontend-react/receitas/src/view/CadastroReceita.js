@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Row, Col, Upload, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 const CadastroReceita = () => {
   const [nome, setNome] = useState('');
@@ -100,6 +101,9 @@ const CadastroReceita = () => {
                 <Button type="primary" htmlType="submit" style={{ marginTop: '10px' }}>
                   Cadastrar Receita
                 </Button>
+                <Button type="primary" style={{marginTop: "10px"}}>
+              <Link to="/principal">Voltar</Link>
+              </Button>
               </Col>
             </Row>
           </Form.Item>
