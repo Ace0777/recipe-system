@@ -24,8 +24,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -36,5 +34,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+
+// Habilitar o CORS para todas as origens
+app.UseCors(builder =>
+{
+    builder
+        .AllowAnyOrigin()  // Permite todas as origens
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+});
+
 app.MapControllers();
 app.Run();

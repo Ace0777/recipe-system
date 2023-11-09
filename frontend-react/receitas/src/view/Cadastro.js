@@ -1,13 +1,29 @@
 import React from 'react';
 import { Form, Input, Button, Row, Col } from 'antd';
 import { UserOutlined, UserAddOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom'; // Importe o Link
+import { Link } from 'react-router-dom';
 import logo from '../img/food_icon.png';
-
+import axios from 'axios';
 
 const Cadastro = () => {
+
   const onFinish = (values) => {
     console.log('Valores do formulário:', values);
+    const url = 'https://localhost:7007/api/usuario';
+    const data = {
+      name: values.nome,
+      email: values.email,
+      senha: values.senha,
+    };
+
+    axios.post(url, data)
+      .then(response => {
+        console.log('Requisição POST bem-sucedida');
+        console.log('Resposta do servidor:', response.data);
+      })
+      .catch(error => {
+        console.error('Falha na requisição:', error);
+      });
   };
 
   return (
@@ -41,19 +57,6 @@ const Cadastro = () => {
             ]}
           >
             <Input prefix={<MailOutlined />} style={{ width: '100%' }} />
-          </Form.Item>
-
-          <Form.Item
-            label="Login"
-            name="login"
-            rules={[
-              {
-                required: true,
-                message: 'Por favor, insira seu login!',
-              },
-            ]}
-          >
-            <Input prefix={<UserAddOutlined />} style={{ width: '100%' }} />
           </Form.Item>
 
           <Form.Item

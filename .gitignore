@@ -1,0 +1,48 @@
+# Ignorar arquivos temporários gerados pelo Visual Studio
+.vscode/
+.vs/
+bin/
+obj/
+
+# Ignorar arquivos de compilação
+*.dll
+*.pdb
+*.exe
+*.log
+*.json
+
+# Ignorar arquivos de configuração do usuário
+*.user
+*.suo
+*.userprefs
+
+# Ignorar arquivos do NuGet
+packages/
+
+# Ignorar arquivos de saída do MSBuild
+*.Cache/
+*.csproj.user
+*.obj/
+
+# Ignorar arquivos de dependência do Node.js
+node_modules/
+
+# Ignorar arquivos de saída do TypeScript
+*.js
+*.map
+*.ts
+
+# Ignorar arquivos temporários do Windows
+Thumbs.db
+ehthumbs.db
+
+# Ignorar arquivos de registro do Windows
+*.log
+
+# Ignorar arquivos de backup do Windows
+*.bak
+*.backup
+*.save
+
+# Ignorar arquivos de configuração do Windows
+Desktop.ini
