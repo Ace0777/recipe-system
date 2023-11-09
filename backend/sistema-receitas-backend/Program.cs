@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using sistema_receitas_backend.Models;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<sistema_receitas_backendContext>(options =>
@@ -13,10 +14,17 @@ using var scope = builder.Services.BuildServiceProvider().CreateScope();
 var dbContext = scope.ServiceProvider.GetRequiredService<sistema_receitas_backendContext>();
 dbContext.Database.Migrate();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    options.JsonSerializerOptions.WriteIndented = true; // Opcional: para formatação mais legível
+});
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
 
 var app = builder.Build();
 

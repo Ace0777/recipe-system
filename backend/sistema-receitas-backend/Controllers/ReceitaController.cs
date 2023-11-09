@@ -38,7 +38,7 @@ namespace sistema_receitas_backend.Controllers
                 return NotFound("Receita não encontrada.");
             }
 
-            return Ok(receita); // Retorna a receita encontrada em JSON
+            return Ok(receita);
         }
 
         // POST: api/receita
@@ -54,7 +54,6 @@ namespace sistema_receitas_backend.Controllers
             {
                 Nome = criarReceitaDTO.Nome,
                 Descricao = criarReceitaDTO.Descricao,
-                Curtidas = criarReceitaDTO.Curtidas,
                 UsuarioId = criarReceitaDTO.UsuarioId,
             };
 
@@ -75,45 +74,59 @@ namespace sistema_receitas_backend.Controllers
 
             _context.Receita.Add(novaReceita);
 
-            var options = new JsonSerializerOptions
-            {
-                ReferenceHandler = ReferenceHandler.Preserve,
-                // Outras configurações, se necessário
-            };
-
-            var json = JsonSerializer.Serialize(novaReceita, options);
-
+            
             await _context.SaveChangesAsync();
 
-            return Ok(json);
+            return Ok(novaReceita);
         }
 
-        // PUT: api/receita/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Edit(int id, [FromBody] Receita receita)
-        {
-            if (id != receita.Id)
-            {
-                return BadRequest("O ID na URL e o ID no corpo da solicitação não coincidem.");
-            }
 
-            if (!_context.Receita.Any(u => u.Id == id))
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Edit(int id, [FromBody] EditarReceitaDTO editarReceitaDTO)
+        {
+            var receita = await _context.Receita.FindAsync(id);
+
+            if (receita == null)
             {
                 return NotFound("Receita não encontrada.");
             }
 
-            _context.Entry(receita).State = EntityState.Modified;
+            receita.Nome = editarReceitaDTO.Nome;
+            receita.Descricao = editarReceitaDTO.Descricao;
+            
+            receita.Ingredientes = await _context.ReceitaIngrediente
+            .Where(r => r.ReceitaId == id)
+            .ToListAsync();
+
+            _context.ReceitaIngrediente.RemoveRange(receita.Ingredientes);
+
+            if (editarReceitaDTO.IngredientesIds != null || editarReceitaDTO.IngredientesIds.Count > 0)
+            {   
+                foreach (var ingredienteId in editarReceitaDTO.IngredientesIds)
+                {
+                    var ingrediente = await _context.Ingrediente.FindAsync(ingredienteId);
+                    if (ingrediente != null)
+                    {
+                        receita.Ingredientes.Add(new ReceitaIngrediente
+                        {
+                            Receita = receita,
+                            Ingrediente = ingrediente
+                        });
+                    }
+                }
+            }
 
             try
             {
                 await _context.SaveChangesAsync();
-                return Ok(receita); 
+                return Ok();
             }
             catch (DbUpdateConcurrencyException)
             {
                 return Conflict("Ocorreu um conflito ao atualizar a receita.");
             }
         }
+
 
         // DELETE: api/receita/5
         [HttpDelete("{id}")]
