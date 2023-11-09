@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Row, Col, InputNumber } from 'antd';
+import { Form, Input, Button, Row, Col, InputNumber, notification } from 'antd';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-const CadastroIngrediente = ({ onIngredienteSubmit }) => {
+const CadastroIngrediente = () => {
+
   const [nome, setNome] = useState('');
-  const [quantidade, setQuantidade] = useState(1); // Valor padrão de 1
+  const [quantidade, setQuantidade] = useState(1); 
 
   const handleNomeChange = (e) => {
     setNome(e.target.value);
@@ -29,13 +31,30 @@ const CadastroIngrediente = ({ onIngredienteSubmit }) => {
     setQuantidade(1);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (nome && quantidade) {
       const novoIngrediente = {
         nome,
         quantidade,
       };
-      onIngredienteSubmit(novoIngrediente);
+  
+     const url = 'https://localhost:7007/api/ingrediente';
+ 
+     try {
+       const response = await axios.post(url, novoIngrediente);
+       console.log('Requisição POST bem-sucedida');
+       console.log('Resposta do servidor:', response.data);
+ 
+ 
+       notification.success({
+         message: 'Cadastro realizado com sucesso!',
+         description: 'Ingrediente cadastrado!.',
+       });
+ 
+       handleLimparCampos()
+     } catch (error) {
+       console.error('Falha na requisição:', error);
+     }
       handleLimparCampos(); // Limpa os campos após o envio
     }
   };
@@ -61,14 +80,14 @@ const CadastroIngrediente = ({ onIngredienteSubmit }) => {
           </Form.Item>
           <Form.Item style={{ alignContent: 'center' }}>
             <div style={{ textAlign: 'center', marginTop: '15px' }}>
-              <Button type="primary" onClick={handleSubmit} style={{ marginRight: 10 }}>
+              <Button type="primary" htmlType='submit' onClick={handleSubmit} style={{ marginRight: 10 }}>
                 Cadastrar Ingrediente
               </Button>
               <Button type="default" onClick={handleLimparCampos}>
                 Limpar Campos
               </Button>
-              <Button type="primary" style={{marginLeft: "10px"}}>
-              <Link to="/principal">Voltar</Link>
+              <Button type="primary" style={{ marginLeft: "10px" }}>
+                <Link to="/principal">Voltar</Link>
               </Button>
             </div>
 

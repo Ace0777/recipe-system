@@ -21,15 +21,15 @@ const Cadastro = () => {
       console.log('Requisição POST bem-sucedida');
       console.log('Resposta do servidor:', response.data);
 
-      // Exibe notificação de sucesso
+      
       notification.success({
         message: 'Cadastro realizado com sucesso!',
         description: 'Você foi cadastrado com sucesso.',
       });
 
-      // Aguarda 2 segundos (2000 milissegundos) antes de redirecionar
+      
       setTimeout(() => {
-        // Redireciona para a página de login
+       
         window.location.href = '/login';
       }, 2000);
 
