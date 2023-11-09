@@ -2,7 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './view/Login.js'; 
 import Cadastro from './view/Cadastro.js'; 
-import CadastroIngrediente from './view/CadastroIngrediente.js'
+import CadastroReceita from './view/CadastroReceita.js';
+import CadastroIngrediente from './view/CadastroIngrediente.js';
+
 const App = () => {
   return (
     <Router>
@@ -11,6 +13,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/cadastroReceita" element={<CadastroReceita />} />
           <Route path="/cadastroIngrediente" element={<CadastroIngrediente />} />
         </Routes>
       </div>
