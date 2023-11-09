@@ -1,13 +1,13 @@
 import React from 'react';
-import { Form, Input, Button, Row, Col } from 'antd';
-import { UserOutlined, UserAddOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Row, Col, notification } from 'antd';
+import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import logo from '../img/food_icon.png';
 import axios from 'axios';
 
 const Cadastro = () => {
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log('Valores do formulário:', values);
     const url = 'https://localhost:7007/api/usuario';
     const data = {
@@ -16,14 +16,26 @@ const Cadastro = () => {
       senha: values.senha,
     };
 
-    axios.post(url, data)
-      .then(response => {
-        console.log('Requisição POST bem-sucedida');
-        console.log('Resposta do servidor:', response.data);
-      })
-      .catch(error => {
-        console.error('Falha na requisição:', error);
+    try {
+      const response = await axios.post(url, data);
+      console.log('Requisição POST bem-sucedida');
+      console.log('Resposta do servidor:', response.data);
+
+      // Exibe notificação de sucesso
+      notification.success({
+        message: 'Cadastro realizado com sucesso!',
+        description: 'Você foi cadastrado com sucesso.',
       });
+
+      // Aguarda 2 segundos (2000 milissegundos) antes de redirecionar
+      setTimeout(() => {
+        // Redireciona para a página de login
+        window.location.href = '/login';
+      }, 2000);
+
+    } catch (error) {
+      console.error('Falha na requisição:', error);
+    }
   };
 
   return (
