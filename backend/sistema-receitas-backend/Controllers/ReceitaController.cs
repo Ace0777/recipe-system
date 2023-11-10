@@ -4,6 +4,8 @@ using sistema_receitas_backend.Models;
 using sistema_receitas_backend.DTO.Receita;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using sistema_receitas_backend.DTO.Ingrediente;
+using sistema_receitas_backend.Migrations;
 
 namespace sistema_receitas_backend.Controllers
 {
@@ -19,12 +21,116 @@ namespace sistema_receitas_backend.Controllers
         }
 
 
+
         // GET: api/receita
         [HttpGet]
         public async Task<IActionResult> List()
         {
             var receitas = await _context.Receita.ToListAsync();
-            return Ok(receitas); 
+
+            var receitasDTO = new List<MostrarReceitaDTO>();
+            
+            foreach (var receita in receitas) {
+
+                List<Ingrediente> ingredientesDaReceita = await _context.ReceitaIngrediente
+                    .Where(ri => ri.ReceitaId == receita.Id)
+                    .Join(_context.Ingrediente, 
+                        receitaIngrediente => receitaIngrediente.IngredienteId,
+                        ingrediente => ingrediente.Id,
+                        (receitaIngrediente, ingrediente) => ingrediente)
+                    .ToListAsync();
+
+
+                var ingredientesDTO = new List<MostrarIngredienteDTO>();
+
+                if (ingredientesDaReceita.Count > 0)
+                {
+                    foreach (var ing in ingredientesDaReceita)
+                    {
+                        var ingDTO = new MostrarIngredienteDTO { Id = ing.Id, Nome = ing.Nome, Quantidade = ing.Quantidade };
+                        ingredientesDTO.Add(ingDTO);
+                    }
+                }
+
+                var mrDTO = new MostrarReceitaDTO { Id = receita.Id, Nome = receita.Nome, Descricao = receita.Descricao, Curtidas = receita.Curtidas, Ingredientes = ingredientesDTO, UsuarioId = receita.UsuarioId };
+                receitasDTO.Add(mrDTO);
+            }
+            
+            return Ok(receitasDTO); 
+        }
+
+        // GET: api/receita/usuario/1
+        [HttpGet("usuario/{userId}")]
+        public async Task<IActionResult> ListByUserId(int userId) // busca receitas pelo id do usuario que cadastrou
+        {
+            var receitas = await _context.Receita.Where(r => r.UsuarioId == userId).ToListAsync();
+
+            var receitasDTO = new List<MostrarReceitaDTO>();
+
+            foreach (var receita in receitas)
+            {
+
+                List<Ingrediente> ingredientesDaReceita = await _context.ReceitaIngrediente
+                    .Where(ri => ri.ReceitaId == receita.Id)
+                    .Join(_context.Ingrediente,
+                        receitaIngrediente => receitaIngrediente.IngredienteId,
+                        ingrediente => ingrediente.Id,
+                        (receitaIngrediente, ingrediente) => ingrediente)
+                    .ToListAsync();
+
+
+                var ingredientesDTO = new List<MostrarIngredienteDTO>();
+
+                if (ingredientesDaReceita.Count > 0)
+                {
+                    foreach (var ing in ingredientesDaReceita)
+                    {
+                        var ingDTO = new MostrarIngredienteDTO { Id = ing.Id, Nome = ing.Nome, Quantidade = ing.Quantidade };
+                        ingredientesDTO.Add(ingDTO);
+                    }
+                }
+
+                var mrDTO = new MostrarReceitaDTO { Id = receita.Id, Nome = receita.Nome, Descricao = receita.Descricao, Curtidas = receita.Curtidas, Ingredientes = ingredientesDTO, UsuarioId = receita.UsuarioId };
+                receitasDTO.Add(mrDTO);
+            }
+
+            return Ok(receitasDTO);
+        }
+
+        // GET: api/receita/nome/nomeReceita
+        [HttpGet("nome/{nomeReceita}")]
+        public async Task<IActionResult> ListByNome(string nomeReceita) // busca receitas pelo nome da receita
+        {
+            var receitas = await _context.Receita.Where(r => r.Nome.Contains(nomeReceita)).ToListAsync();
+
+            var receitasDTO = new List<MostrarReceitaDTO>();
+
+            foreach (var receita in receitas)
+            {
+                List<Ingrediente> ingredientesDaReceita = await _context.ReceitaIngrediente
+                    .Where(ri => ri.ReceitaId == receita.Id)
+                    .Join(_context.Ingrediente,
+                        receitaIngrediente => receitaIngrediente.IngredienteId,
+                        ingrediente => ingrediente.Id,
+                        (receitaIngrediente, ingrediente) => ingrediente)
+                    .ToListAsync(); ;
+
+                var ingredientesDTO = new List<MostrarIngredienteDTO>();
+
+                if (ingredientesDaReceita.Count > 0)
+                {
+                    foreach (var ing in ingredientesDaReceita)
+                    {
+                        var ingDTO = new MostrarIngredienteDTO { Id = ing.Id, Nome = ing.Nome, Quantidade = ing.Quantidade };
+                        ingredientesDTO.Add(ingDTO);
+                    }
+                }
+
+                var mrDTO = new MostrarReceitaDTO { Id = receita.Id, Nome = receita.Nome, Descricao = receita.Descricao, Curtidas = receita.Curtidas, Ingredientes = ingredientesDTO, UsuarioId = receita.UsuarioId };
+                receitasDTO.Add(mrDTO);
+            }
+
+            return Ok(receitasDTO);
         }
 
         // GET: api/receita/5
@@ -38,7 +144,27 @@ namespace sistema_receitas_backend.Controllers
                 return NotFound("Receita não encontrada.");
             }
 
-            return Ok(receita);
+            List<Ingrediente> ingredientesDaReceita = await _context.ReceitaIngrediente
+            .Where(ri => ri.ReceitaId == receita.Id)
+            .Join(_context.Ingrediente,
+                receitaIngrediente => receitaIngrediente.IngredienteId,
+                ingrediente => ingrediente.Id,
+                (receitaIngrediente, ingrediente) => ingrediente)
+            .ToListAsync();
+
+            var ingredientesDTO = new List<MostrarIngredienteDTO>();
+
+            if (ingredientesDaReceita.Count > 0)
+            {
+                foreach (var ing in ingredientesDaReceita)
+                {
+                    var ingDTO = new MostrarIngredienteDTO { Id = ing.Id, Nome = ing.Nome, Quantidade = ing.Quantidade };
+                    ingredientesDTO.Add(ingDTO);
+                }
+            }
+
+            var receitaDTO = new MostrarReceitaDTO { Id = receita.Id, Descricao = receita.Descricao, Curtidas = receita.Curtidas , Nome = receita.Nome, Ingredientes = ingredientesDTO,UsuarioId = receita.UsuarioId};
+            return Ok(receitaDTO);
         }
 
         // POST: api/receita
@@ -63,7 +189,7 @@ namespace sistema_receitas_backend.Controllers
                     .Where(i => criarReceitaDTO.IngredientesIds.Contains(i.Id))
                     .ToListAsync();
 
-                var receitaIngredientes = ingredientes.Select(ingrediente => new ReceitaIngrediente
+                var receitaIngredientes = ingredientes.Select(ingrediente => new Models.ReceitaIngrediente
                 {
                     Receita = novaReceita,
                     Ingrediente = ingrediente
@@ -107,7 +233,7 @@ namespace sistema_receitas_backend.Controllers
                     var ingrediente = await _context.Ingrediente.FindAsync(ingredienteId);
                     if (ingrediente != null)
                     {
-                        receita.Ingredientes.Add(new ReceitaIngrediente
+                        receita.Ingredientes.Add(new Models.ReceitaIngrediente
                         {
                             Receita = receita,
                             Ingrediente = ingrediente
