@@ -219,15 +219,13 @@ namespace sistema_receitas_backend.Controllers
 
             receita.Nome = editarReceitaDTO.Nome;
             receita.Descricao = editarReceitaDTO.Descricao;
-            
-            receita.Ingredientes = await _context.ReceitaIngrediente
-            .Where(r => r.ReceitaId == id)
-            .ToListAsync();
 
-            _context.ReceitaIngrediente.RemoveRange(receita.Ingredientes);
+            // Remove ingredientes que não estão mais presentes
+            receita.Ingredientes.RemoveAll(ri => !editarReceitaDTO.IngredientesIds.Contains(ri.IngredienteId));
 
-            if (editarReceitaDTO.IngredientesIds != null || editarReceitaDTO.IngredientesIds.Count > 0)
-            {   
+            // Adiciona novos ingredientes
+            if (editarReceitaDTO.IngredientesIds != null && editarReceitaDTO.IngredientesIds.Count > 0)
+            {
                 foreach (var ingredienteId in editarReceitaDTO.IngredientesIds)
                 {
                     var ingrediente = await _context.Ingrediente.FindAsync(ingredienteId);
@@ -252,6 +250,7 @@ namespace sistema_receitas_backend.Controllers
                 return Conflict("Ocorreu um conflito ao atualizar a receita.");
             }
         }
+
 
 
         // DELETE: api/receita/5

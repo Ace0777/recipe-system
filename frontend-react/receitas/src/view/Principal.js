@@ -1,57 +1,61 @@
-import React from 'react';
-import { Input, Button, Row, Col, Card, Space, Typography, message, Affix } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Input, Button, Row, Col, Card, Space, Typography, message, Affix, Modal, Form } from 'antd';
 import { SearchOutlined, PlusOutlined, EditOutlined, LikeOutlined, DeleteOutlined, BookOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+const { TextArea } = Input;
+
 const TelaPrincipal = () => {
+  const [receitas, setReceitas] = useState([]);
+  const [valorPesquisa, setValorPesquisa] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [receitaSelecionada, setReceitaSelecionada] = useState(null);
 
-  async function buscaTodasReceitas() {
-
+  const buscaTodasReceitas = async () => {
     const url = 'https://localhost:7007/api/receita';
 
     try {
-      const response = await axios.get(url,);
-      console.log('Requisição GET bem-sucedida');
-      console.log('Resposta do servidor:', response.data.$values);
-      
+      const response = await axios.get(url);
       setReceitas(response.data.$values);
-
     } catch (error) {
       console.error('Falha na requisição:', error);
     }
-  }
+  };
 
-  async function buscaTodasReceitasNome(nome) {
-
+  const buscaTodasReceitasNome = async (nome) => {
     let url = `https://localhost:7007/api/receita/nome/${nome}`;
-    
-    if (nome == '') {
-      url = `https://localhost:7007/api/receita`
+
+    if (nome === '') {
+      url = 'https://localhost:7007/api/receita';
     }
 
     try {
-      const response = await axios.get(url,);
-      console.log('Nome passado: ', nome)
-      console.log('Requisição GET bem-sucedida');
-      console.log('Resposta do servidor:', response.data.$values);
-      
+      const response = await axios.get(url);
       setReceitas(response.data.$values);
-
     } catch (error) {
       console.error('Falha na requisição:', error);
     }
-  }
+  };
 
-  React.useEffect(() => {
-    buscaTodasReceitas();
-  }, []);
-  // Exemplo de dados de receitas
-  const [receitas, setReceitas] = React.useState([]);
-  const [valorPesquisa, setValorPesquisa] = React.useState('');
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
 
-  const handleEditar = (nome) => {
-    message.info(`Editar ${nome}`);
+  const handleEditar = (receita) => {
+    setReceitaSelecionada(receita);
+    showModal();
+  };
+
+  const handleEditFormSubmit = async (values) => {
+    try {
+      const url = `https://localhost:7007/api/receita/${receitaSelecionada.id}`;
+      await axios.put(url, values);
+      setIsModalVisible(false);
+      buscaTodasReceitas(); 
+    } catch (error) {
+      console.error('Falha ao atualizar a receita:', error);
+    }
   };
 
   const handleCurtir = (nome) => {
@@ -66,6 +70,10 @@ const TelaPrincipal = () => {
     const novoValor = event.target.value;
     setValorPesquisa(novoValor);
   };
+
+  useEffect(() => {
+    buscaTodasReceitas();
+  }, []);
 
   return (
     <div style={{ padding: '20px' }}>
@@ -100,7 +108,13 @@ const TelaPrincipal = () => {
           />
         </Col>
         <Col span={2}>
-          <Button type="primary" icon={<SearchOutlined />} size="large" style={{ marginLeft: '10px' }} onClick={() => buscaTodasReceitasNome(valorPesquisa)}>
+          <Button
+            type="primary"
+            icon={<SearchOutlined />}
+            size="large"
+            style={{ marginLeft: '10px' }}
+            onClick={() => buscaTodasReceitasNome(valorPesquisa)}
+          >
             Pesquisar
           </Button>
         </Col>
@@ -119,7 +133,7 @@ const TelaPrincipal = () => {
                 <Button
                   type="default"
                   icon={<EditOutlined />}
-                  onClick={() => handleEditar(receita.nome)}
+                  onClick={() => handleEditar(receita)}
                 >
                   Editar
                 </Button>
@@ -128,7 +142,7 @@ const TelaPrincipal = () => {
                   icon={<LikeOutlined />}
                   onClick={() => handleCurtir(receita.nome)}
                 >
-                  {' ' + receita.curtidas} 
+                  {' ' + receita.curtidas}
                 </Button>
                 <Button
                   type="default"
@@ -142,8 +156,52 @@ const TelaPrincipal = () => {
           </Col>
         ))}
       </Row>
+
+      <Modal
+        title="Editar Receita"
+        visible={isModalVisible}
+        onCancel={() => {
+          setIsModalVisible(false);
+          setReceitaSelecionada(null); 
+        }}
+        footer={null}
+      >
+        <Form
+          name="editForm"
+          onFinish={handleEditFormSubmit}
+        >
+          <Form.Item
+            label="Nome da Receita"
+            name="nome"
+            initialValue={receitaSelecionada?.nome}
+            rules={[{ required: true, message: 'Por favor, insira o nome da receita!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Descrição"
+            name="descricao"
+            initialValue={receitaSelecionada?.descricao}
+            rules={[{ required: true, message: 'Por favor, insira a descrição da receita!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Ingredientes"
+            name="ingredientes"
+            initialValue={Array.isArray(receitaSelecionada?.ingredientes) ? receitaSelecionada?.ingredientes.join('\n') : ''}
+            rules={[{ required: true, message: 'Por favor, insira os ingredientes da receita!' }]}
+          >
+            <TextArea rows={4} />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Salvar
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };
-
 export default TelaPrincipal;
