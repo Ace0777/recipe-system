@@ -98,8 +98,21 @@ const TelaPrincipal = () => {
     message.success(`Curtir ${nome}`);
   };
 
-  const handleExcluir = (nome) => {
-    message.error(`Excluir ${nome}`);
+  const handleExcluir = async (id) => {
+    try {
+      const url = `https://localhost:7007/api/receita/${id}`;
+
+      await axios.delete(url,);
+      message.success(`Receita excluída!`);
+      setTimeout(() => {
+
+        window.location.reload();
+      }, 2000);
+      
+    } catch (error) {
+      console.error('Falha ao excluir a receita:', error);
+      message.error(`Excluir ${id}`);
+    }
   };
 
   const handleInputChange = (event) => {
@@ -176,14 +189,14 @@ const TelaPrincipal = () => {
                 <Button
                   type="default"
                   icon={<LikeOutlined />}
-                  onClick={() => handleCurtir(receita.nome)}
+                  onClick={() => handleCurtir(receita.id)}
                 >
                   {' ' + receita.curtidas}
                 </Button>
                 <Button
                   type="default"
                   icon={<DeleteOutlined />}
-                  onClick={() => handleExcluir(receita.nome)}
+                  onClick={() => handleExcluir(receita.id)}
                 >
                   Excluir
                 </Button>
