@@ -97,6 +97,35 @@ namespace sistema_receitas_backend.Controllers
             return Ok(receitasDTO);
         }
 
+        // GET: api/receita/usuario/1
+        [HttpPatch("curtidas/{receitaId}")]
+        public async Task<IActionResult> Curtir(int receitaId) // busca receitas pelo id do usuario que cadastrou
+        {
+            try
+            {
+                
+                var receita = await _context.Receita.FindAsync(receitaId);
+
+                if (receita == null)
+                {
+                    return NotFound(); 
+                }
+                
+                
+                receita.Curtidas++;
+
+                
+                _context.Update(receita);
+                await _context.SaveChangesAsync();
+
+                return Ok(); 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro interno: {ex.Message}");
+            }
+        }
+
         // GET: api/receita/nome/nomeReceita
         [HttpGet("nome/{nomeReceita}")]
         public async Task<IActionResult> ListByNome(string nomeReceita) // busca receitas pelo nome da receita

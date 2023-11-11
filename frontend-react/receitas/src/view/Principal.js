@@ -46,10 +46,6 @@ const TelaPrincipal = () => {
   const buscaTodasReceitasUser = async (id) => {
     let url = `https://localhost:7007/api/receita/usuario/${id}`;
 
-    if (nome === '') {
-      url = 'https://localhost:7007/api/receita';
-    }
-
     try {
       const response = await axios.get(url);
       setReceitas(response.data.$values);
@@ -109,8 +105,17 @@ const TelaPrincipal = () => {
     }
   };
 
-  const handleCurtir = (nome) => {
-    message.success(`Curtir ${nome}`);
+  const handleCurtir = async (id) => {
+    try {
+      const url = `https://localhost:7007/api/receita/curtidas/${id}`;
+
+      await axios.patch(url,);
+      message.success(`Você curtiu uma receita!`);
+      
+    } catch (error) {
+      console.error('Falha ao curtir a receita:', error);
+      message.error(`Curtir ${id}`);
+    }
   };
 
   const handleExcluir = async (id) => {
