@@ -43,6 +43,21 @@ const TelaPrincipal = () => {
     }
   };
 
+  const buscaTodasReceitasUser = async (id) => {
+    let url = `https://localhost:7007/api/receita/usuario/${id}`;
+
+    if (nome === '') {
+      url = 'https://localhost:7007/api/receita';
+    }
+
+    try {
+      const response = await axios.get(url);
+      setReceitas(response.data.$values);
+    } catch (error) {
+      console.error('Falha na requisição:', error);
+    }
+  };
+
   const buscaTodosIngredientes = async () => {
     let url = `https://localhost:7007/api/ingrediente`;
 
@@ -127,7 +142,8 @@ const TelaPrincipal = () => {
   return (
     <div style={{ padding: '20px' }}>
       <Affix offsetTop={20} style={{ position: 'absolute', left: 20, top: 20 }}>
-        <Button type="default" icon={<BookOutlined />}>
+        {/*ALTERAR O ID NO ONCLICK DE ACORDO COM O USER LOGADO*/}
+        <Button type="default" onClick={buscaTodasReceitasUser(1)} icon={<BookOutlined />}>
           Minhas Receitas
         </Button>
       </Affix>
