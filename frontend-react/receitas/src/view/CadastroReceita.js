@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Row, Col, Upload, message, Select, notification } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Row, Col, Select, notification } from 'antd';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 const { Option } = Select;
@@ -8,10 +7,10 @@ const { Option } = Select;
 const CadastroReceita = () => {
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
-  const [ingredientes, setIngredientes] = useState([]);
-  const [novoIngrediente, setNovoIngrediente] = useState('');
+  //const [ingredientes, setIngredientes] = useState([]);
   const [ingredientesSelecionadosEdit, setIngredientesSelecionadosEdit] = useState([]);
   const [ingredientesSelecionadosInts, setIngredientesSelecionadosInts] = useState([]);
+  const [usuarioLogado, setUsuarioLogado] = useState({});
 
   const handleNomeChange = (e) => {
     setNome(e.target.value);
@@ -20,7 +19,7 @@ const CadastroReceita = () => {
   const handleDescricaoChange = (e) => {
     setDescricao(e.target.value);
   };
-
+/*
   const handleIngredienteChange = (e) => {
     setNovoIngrediente(e.target.value);
   };
@@ -31,6 +30,12 @@ const CadastroReceita = () => {
       setNovoIngrediente('');
     }
   };
+*/
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('usuario'))
+    console.log(user)
+    setUsuarioLogado(user)
+  }, []);
 
   const buscaTodosIngredientes = async () => {
     let url = `https://localhost:7007/api/ingrediente`;
@@ -60,7 +65,7 @@ const CadastroReceita = () => {
     const data = {
       nome: nome,
       descricao: descricao,
-      usuarioId: 1,
+      usuarioId: usuarioLogado.id,
       ingredientesIds: ingredientesSelecionadosInts
     };
 

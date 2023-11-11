@@ -47,6 +47,30 @@ namespace sistema_receitas_backend.Controllers
             return Ok(usuario);
         }
 
+        // POST: api/usuario/login
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDTO login)
+        {
+            var usuario = await _context.Usuario
+                .FirstOrDefaultAsync(m => m.Email == login.Email);
+
+            if (usuario == null || usuario.Senha != login.Senha)
+            {
+                return NotFound();
+            }
+
+            var usuarioDTO = new MostrarUsuarioDTO
+            {
+                Id = usuario.Id,
+                Name = usuario.Name,
+                Email = usuario.Email,
+                Senha = usuario.Senha, 
+                Profile = usuario.Profile
+            };
+
+            return Ok(usuarioDTO);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CriarUsuarioDTO criarUsuarioDTO)
         {

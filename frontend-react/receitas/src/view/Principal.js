@@ -4,7 +4,6 @@ import { SearchOutlined, PlusOutlined, EditOutlined, LikeOutlined, DeleteOutline
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const { TextArea } = Input;
 const { Option } = Select;
 
 const TelaPrincipal = () => {
@@ -16,6 +15,7 @@ const TelaPrincipal = () => {
   const [ingredientesSelecionadosInts, setIngredientesSelecionadosInts] = useState([]);
   const [nomeReceita, setNomeReceita] = useState('');
   const [descricaoReceita, setDescricaoReceita] = useState('');
+  const [usuarioLogado, setUsuarioLogado] = useState({});
 
   const buscaTodasReceitas = async () => {
     const url = 'https://localhost:7007/api/receita';
@@ -141,14 +141,16 @@ const TelaPrincipal = () => {
   };
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('usuario'))
+    console.log(user)
+    setUsuarioLogado(user)
     buscaTodasReceitas();
   }, []);
 
   return (
     <div style={{ padding: '20px' }}>
       <Affix offsetTop={20} style={{ position: 'absolute', left: 20, top: 20 }}>
-        {/*ALTERAR O ID NO ONCLICK DE ACORDO COM O USER LOGADO*/}
-        <Button type="default" onClick={()=>buscaTodasReceitasUser(1)} icon={<BookOutlined />}>
+        <Button type="default" onClick={()=>buscaTodasReceitasUser(usuarioLogado.id)} icon={<BookOutlined />}>
           Minhas Receitas
         </Button>
       </Affix>
