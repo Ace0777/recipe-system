@@ -148,7 +148,7 @@ const TelaPrincipal = () => {
     <div style={{ padding: '20px' }}>
       <Affix offsetTop={20} style={{ position: 'absolute', left: 20, top: 20 }}>
         {/*ALTERAR O ID NO ONCLICK DE ACORDO COM O USER LOGADO*/}
-        <Button type="default" onClick={buscaTodasReceitasUser(1)} icon={<BookOutlined />}>
+        <Button type="default" onClick={()=>buscaTodasReceitasUser(1)} icon={<BookOutlined />}>
           Minhas Receitas
         </Button>
       </Affix>
