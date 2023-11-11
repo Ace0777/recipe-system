@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Button, Row, Col, Card, Space, Typography, message, Affix, Modal, Form } from 'antd';
+import { Input, Button, Row, Col, Card, Space, Typography, message, Affix, Modal, Form, Select } from 'antd';
 import { SearchOutlined, PlusOutlined, EditOutlined, LikeOutlined, DeleteOutlined, BookOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const { TextArea } = Input;
+const { Option } = Select;
 
 const TelaPrincipal = () => {
   const [receitas, setReceitas] = useState([]);
   const [valorPesquisa, setValorPesquisa] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [receitaSelecionada, setReceitaSelecionada] = useState(null);
+  const [ingredientesSelecionadosEdit, setIngredientesSelecionadosEdit] = useState([]);
+  const [ingredientesSelecionadosInts, setIngredientesSelecionadosInts] = useState([]);
+  const [nomeReceita, setNomeReceita] = useState('');
+  const [descricaoReceita, setDescricaoReceita] = useState('');
 
   const buscaTodasReceitas = async () => {
     const url = 'https://localhost:7007/api/receita';
@@ -38,21 +43,52 @@ const TelaPrincipal = () => {
     }
   };
 
+  const buscaTodosIngredientes = async () => {
+    let url = `https://localhost:7007/api/ingrediente`;
+
+    try {
+      const response = await axios.get(url);
+      setIngredientesSelecionadosEdit(response.data.$values);
+    } catch (error) {
+      console.error('Falha na requisição:', error);
+    }
+  };
+
   const showModal = () => {
     setIsModalVisible(true);
   };
 
   const handleEditar = (receita) => {
     setReceitaSelecionada(receita);
+    console.log(receita)
+    buscaTodosIngredientes()
+    console.log(receita.ingredientes.$values)
+    setNomeReceita(receita.nome)
+    setDescricaoReceita(receita.descricao)
     showModal();
+  };
+
+  const handleChange = (values) => {
+    setIngredientesSelecionadosInts(values)
+    console.log(ingredientesSelecionadosInts)
   };
 
   const handleEditFormSubmit = async (values) => {
     try {
       const url = `https://localhost:7007/api/receita/${receitaSelecionada.id}`;
-      await axios.put(url, values);
+      console.log(receitaSelecionada)
+
+      const data = {
+        nome: nomeReceita,
+        descricao: descricaoReceita,
+        ingredientesIds: ingredientesSelecionadosInts
+      }
+
+      console.log('dataaaaa ', data)
+      await axios.put(url, data);
+      //buscaTodasReceitas();
+      window.location.reload();
       setIsModalVisible(false);
-      buscaTodasReceitas(); 
     } catch (error) {
       console.error('Falha ao atualizar a receita:', error);
     }
@@ -162,7 +198,7 @@ const TelaPrincipal = () => {
         visible={isModalVisible}
         onCancel={() => {
           setIsModalVisible(false);
-          setReceitaSelecionada(null); 
+          setReceitaSelecionada(null);
         }}
         footer={null}
       >
@@ -176,7 +212,7 @@ const TelaPrincipal = () => {
             initialValue={receitaSelecionada?.nome}
             rules={[{ required: true, message: 'Por favor, insira o nome da receita!' }]}
           >
-            <Input />
+            <Input value={nomeReceita} onChange={(e) => setNomeReceita(e.target.value)} />
           </Form.Item>
           <Form.Item
             label="Descrição"
@@ -184,15 +220,25 @@ const TelaPrincipal = () => {
             initialValue={receitaSelecionada?.descricao}
             rules={[{ required: true, message: 'Por favor, insira a descrição da receita!' }]}
           >
-            <Input />
+            <Input value={descricaoReceita} onChange={(e) => setDescricaoReceita(e.target.value)}/>
           </Form.Item>
           <Form.Item
             label="Ingredientes"
             name="ingredientes"
-            initialValue={Array.isArray(receitaSelecionada?.ingredientes) ? receitaSelecionada?.ingredientes.join('\n') : ''}
-            rules={[{ required: true, message: 'Por favor, insira os ingredientes da receita!' }]}
+
           >
-            <TextArea rows={4} />
+            <Select
+              mode="multiple"
+              style={{ width: '100%' }}
+              placeholder="Selecione"
+              onChange={handleChange}
+            >
+              {ingredientesSelecionadosEdit.map((ingrediente) => (
+                <Option key={ingrediente.nome} value={ingrediente.id}>
+                  {ingrediente.nome}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
