@@ -64,7 +64,6 @@ namespace sistema_receitas_backend.Controllers
                 Id = usuario.Id,
                 Name = usuario.Name,
                 Email = usuario.Email,
-                Senha = usuario.Senha, 
                 Profile = usuario.Profile
             };
 
