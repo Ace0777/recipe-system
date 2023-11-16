@@ -5,6 +5,8 @@ import logo from '../img/food_icon.png'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+const apiUrl = "http://54.145.167.97/api";
+
 const Login = () => {
 	const [showPassword, setShowPassword] = useState(false);
 
@@ -15,7 +17,7 @@ const Login = () => {
 	};
 
 	async function logar(values) {
-		const url = 'https://localhost:7007/api/usuario/login';
+		const url = `${apiUrl}/usuario/login`;
 		const data = {
 			email: values.email,
 			senha: values.senha,

@@ -5,11 +5,13 @@ import { Link } from 'react-router-dom';
 import logo from '../img/food_icon.png';
 import axios from 'axios';
 
+const apiUrl = "http://54.145.167.97/api";
+
 const Cadastro = () => {
 
   const onFinish = async (values) => {
     console.log('Valores do formulário:', values);
-    const url = 'https://localhost:7007/api/usuario';
+    const url = `${apiUrl}/usuario`;
     const data = {
       name: values.nome,
       email: values.email,

@@ -6,6 +6,8 @@ import axios from 'axios';
 
 const { Option } = Select;
 
+const apiUrl = "http://54.145.167.97/api";
+
 const TelaPrincipal = () => {
   const [receitas, setReceitas] = useState([]);
   const [valorPesquisa, setValorPesquisa] = useState('');
@@ -18,7 +20,7 @@ const TelaPrincipal = () => {
   const [usuarioLogado, setUsuarioLogado] = useState({});
 
   const buscaTodasReceitas = async () => {
-    const url = 'https://localhost:7007/api/receita';
+    let url = `${apiUrl}/receita`;
 
     try {
       const response = await axios.get(url);
@@ -29,10 +31,10 @@ const TelaPrincipal = () => {
   };
 
   const buscaTodasReceitasNome = async (nome) => {
-    let url = `https://localhost:7007/api/receita/nome/${nome}`;
+    let url = `${apiUrl}/receita/nome/${nome}`;
 
     if (nome === '') {
-      url = 'https://localhost:7007/api/receita';
+      url = `${apiUrl}/receita`;
     }
 
     try {
@@ -44,8 +46,7 @@ const TelaPrincipal = () => {
   };
 
   const buscaTodasReceitasUser = async (id) => {
-    let url = `https://localhost:7007/api/receita/usuario/${id}`;
-
+    let url = `${apiUrl}/receita/usuario/${id}`;
     try {
       const response = await axios.get(url);
       setReceitas(response.data.$values);
@@ -55,7 +56,7 @@ const TelaPrincipal = () => {
   };
 
   const buscaTodosIngredientes = async () => {
-    let url = `https://localhost:7007/api/ingrediente`;
+    let url = `${apiUrl}/ingrediente`;
 
     try {
       const response = await axios.get(url);
@@ -86,7 +87,7 @@ const TelaPrincipal = () => {
 
   const handleEditFormSubmit = async (values) => {
     try {
-      const url = `https://localhost:7007/api/receita/${receitaSelecionada.id}`;
+      const url = `${apiUrl}/receita/${receitaSelecionada.id}`;
       console.log(receitaSelecionada)
 
       const data = {
@@ -95,9 +96,7 @@ const TelaPrincipal = () => {
         ingredientesIds: ingredientesSelecionadosInts
       }
 
-      console.log('dataaaaa ', data)
       await axios.put(url, data);
-      //buscaTodasReceitas();
       window.location.reload();
       setIsModalVisible(false);
     } catch (error) {
@@ -107,10 +106,12 @@ const TelaPrincipal = () => {
 
   const handleCurtir = async (id) => {
     try {
-      const url = `https://localhost:7007/api/receita/curtidas/${id}`;
+      const url = `${apiUrl}/receita/curtidas/${id}`;
 
       await axios.patch(url,);
       message.success(`Você curtiu uma receita!`);
+
+      buscaTodasReceitas();
       
     } catch (error) {
       console.error('Falha ao curtir a receita:', error);
@@ -120,7 +121,7 @@ const TelaPrincipal = () => {
 
   const handleExcluir = async (id) => {
     try {
-      const url = `https://localhost:7007/api/receita/${id}`;
+      const url = `${apiUrl}/receita/${id}`;
 
       await axios.delete(url,);
       message.success(`Receita excluída!`);
@@ -142,6 +143,18 @@ const TelaPrincipal = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('usuario'))
+
+    if (user === undefined || user === null) {
+      message.error(`Usuario não autenticado`);
+
+      setTimeout(() => {
+
+        window.location.href = '/login';
+      }, 1500);
+
+      return;
+    }
+
     console.log(user)
     setUsuarioLogado(user)
     buscaTodasReceitas();

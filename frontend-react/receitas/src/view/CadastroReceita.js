@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Row, Col, Select, notification } from 'antd';
+import { Form, Input, Button, Row, Col, Select, notification, message } from 'antd';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 const { Option } = Select;
 
+const apiUrl = "http://54.145.167.97/api";
+
 const CadastroReceita = () => {
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
-  //const [ingredientes, setIngredientes] = useState([]);
   const [ingredientesSelecionadosEdit, setIngredientesSelecionadosEdit] = useState([]);
   const [ingredientesSelecionadosInts, setIngredientesSelecionadosInts] = useState([]);
   const [usuarioLogado, setUsuarioLogado] = useState({});
@@ -19,26 +20,27 @@ const CadastroReceita = () => {
   const handleDescricaoChange = (e) => {
     setDescricao(e.target.value);
   };
-/*
-  const handleIngredienteChange = (e) => {
-    setNovoIngrediente(e.target.value);
-  };
 
-  const handleAdicionarIngrediente = () => {
-    if (novoIngrediente) {
-      setIngredientes([...ingredientes, novoIngrediente]);
-      setNovoIngrediente('');
-    }
-  };
-*/
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('usuario'))
+
+    if (user === undefined || user === null) {
+      message.error(`Usuario não autenticado`);
+
+      setTimeout(() => {
+
+        window.location.href = '/login';
+      }, 1500);
+
+      return;
+    }
+
     console.log(user)
     setUsuarioLogado(user)
   }, []);
 
   const buscaTodosIngredientes = async () => {
-    let url = `https://localhost:7007/api/ingrediente`;
+    let url = `${apiUrl}/ingrediente`;
 
     try {
       const response = await axios.get(url);
@@ -61,7 +63,7 @@ const CadastroReceita = () => {
 
   const onFinish = async (values) => {
     console.log('Valores do formulário:', values);
-    const url = 'https://localhost:7007/api/receita';
+    const url = `${apiUrl}/receita`;
     const data = {
       nome: nome,
       descricao: descricao,

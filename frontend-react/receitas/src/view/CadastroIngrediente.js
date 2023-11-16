@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { Form, Input, Button, Row, Col, InputNumber, notification } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Input, Button, Row, Col, InputNumber, notification, message } from 'antd';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+
+const apiUrl = "http://54.145.167.97/api";
 
 const CadastroIngrediente = () => {
 
@@ -38,7 +40,7 @@ const CadastroIngrediente = () => {
         quantidade,
       };
   
-     const url = 'https://localhost:7007/api/ingrediente';
+     const url = `${apiUrl}/ingrediente`;
  
      try {
        const response = await axios.post(url, novoIngrediente);
@@ -58,6 +60,21 @@ const CadastroIngrediente = () => {
       handleLimparCampos(); // Limpa os campos após o envio
     }
   };
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('usuario'))
+
+    if (user === undefined || user === null) {
+      message.error(`Usuario não autenticado`);
+
+      setTimeout(() => {
+
+        window.location.href = '/login';
+      }, 1500);
+
+      return;
+    }
+  }, []);
 
   return (
     <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
