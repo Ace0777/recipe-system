@@ -160,12 +160,32 @@ const TelaPrincipal = () => {
     buscaTodasReceitas();
   }, []);
 
+  const handleLogout = () => {
+    Modal.confirm({
+      title: 'Confirmar saída',
+      content: 'Tem certeza que deseja sair?',
+      onOk: () => {
+        localStorage.clear();
+        //sessionStorage.clear();
+        window.location.href = '/login';
+      },
+      onCancel: () => {
+
+      },
+    });
+  };
+
   return (
     <div style={{ padding: '20px' }}>
       <Affix offsetTop={20} style={{ position: 'absolute', left: 20, top: 20 }}>
+        <Space>
+        <Button type="default" onClick={handleLogout} danger>
+          Sair
+        </Button>
         <Button type="default" onClick={()=>buscaTodasReceitasUser(usuarioLogado.id)} icon={<BookOutlined />}>
           Minhas Receitas
         </Button>
+        </Space>
       </Affix>
       <Row justify="end" gutter={16}>
         <Col>
@@ -219,6 +239,7 @@ const TelaPrincipal = () => {
                   type="default"
                   icon={<EditOutlined />}
                   onClick={() => handleEditar(receita)}
+                  disabled={usuarioLogado.profile !== 'ADM' && usuarioLogado.id !== receita.usuarioId }
                 >
                   Editar
                 </Button>
@@ -233,6 +254,7 @@ const TelaPrincipal = () => {
                   type="default"
                   icon={<DeleteOutlined />}
                   onClick={() => handleExcluir(receita.id)}
+                  disabled={usuarioLogado.profile !== 'ADM' && usuarioLogado.id !== receita.usuarioId }
                 >
                   Excluir
                 </Button>
