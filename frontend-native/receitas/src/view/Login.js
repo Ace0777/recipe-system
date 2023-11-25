@@ -3,7 +3,6 @@ import { View, Image, StyleSheet } from 'react-native';
 import { TextInput, Button, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useUserContext } from '../auth/UserContext.js';
-import Toast from 'react-native-toast-message';
 import axios from 'axios';
 
 const apiUrl = "http://54.145.167.97/api";
@@ -35,12 +34,8 @@ const LoginScreen = () => {
 				}
 
         updateUser(userInfo);
-
-        Toast.show({
-          type: 'success',
-          text1: 'Sucesso',
-          text2: 'Login realizado com sucesso',
-        });
+        
+        //NOTIFICATION AQ
 
         setTimeout(() => {
           navigation.navigate('Home');
@@ -48,11 +43,7 @@ const LoginScreen = () => {
       }
 
     } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Erro, usuário não encontrado!',
-        text2: 'Usuário não encontrado, tente novamente.',
-      });
+      //NOTIFICATION AQ
       console.error('Falha na requisição:', error);
     }
   };
@@ -64,6 +55,7 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
+      
       <Image
         source={require('../img/food_icon.png')}
         style={styles.logo}

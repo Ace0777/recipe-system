@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { TextInput, Button, Text } from 'react-native-paper';
 import axios from 'axios';
-import Toast from 'react-native-toast-message';
 
 const apiUrl = "http://54.145.167.97/api";
 
@@ -25,11 +24,7 @@ const CadastroUsuario = ({ navigation }) => {
       console.log('Requisição POST bem-sucedida');
       console.log('Resposta do servidor:', response.data);
 
-      Toast.show({
-        type: 'success',
-        text1: 'Cadastro realizado com sucesso!',
-        text2: 'Você foi cadastrado com sucesso.',
-      });
+      //NOTIFICATION AQ
 
       setTimeout(() => {
         // Navegue para a tela de login após o cadastro
@@ -37,11 +32,7 @@ const CadastroUsuario = ({ navigation }) => {
       }, 2000);
 
     } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Falha no cadastro',
-        text2: 'Ocorreu um erro durante o cadastro. Tente novamente.',
-      });
+      //NOTIFICATION AQ
 
       console.error('Falha na requisição:', error);
     }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, Image } from 'react-native';
 import { TextInput, Button, Text, Menu, Provider, Divider, Chip } from 'react-native-paper';
-import Toast from 'react-native-toast-message';
 import { useUserContext } from '../auth/UserContext.js';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
@@ -32,11 +31,7 @@ const CadastroReceita = () => {
             console.log('Requisição POST bem-sucedida');
             console.log('Resposta do servidor:', response.data);
 
-            Toast.show({
-                type: 'success',
-                text1: 'Sucesso!',
-                text2: 'Receita cadastrada com sucesso.',
-            });
+            //NOTIFICATION AQ
 
             setTimeout(() => {
                 navigation.navigate('Home');
@@ -88,11 +83,7 @@ const CadastroReceita = () => {
 
     useEffect(() => {
         if (user === undefined || user === null) {
-            Toast.show({
-                type: 'error',
-                text1: 'Falha de autenticação!',
-                text2: 'Usuario não autenticado.',
-            });
+            //NOTIFICATION AQ
 
             setTimeout(() => {
                 navigation.navigate('Login');
