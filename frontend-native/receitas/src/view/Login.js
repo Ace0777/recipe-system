@@ -46,7 +46,7 @@ const LoginScreen = () => {
 
 			setTimeout(() => {
 
-        navigation.navigate('Principal');
+        navigation.navigate('Home');
 			}, 2000);
 
 
