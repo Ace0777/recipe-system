@@ -24,13 +24,13 @@ const LoginScreen = () => {
 
       console.log('Resposta do servidor:', response.data);
 
-      if (response.status === 200) {
-        const userInfo = {
-          id: response.data.id,
-          nome: response.data.nome,
-          email: response.data.email,
-          profile: response.data.profile,
-        };
+			if (response.status === 200) {
+				const userInfo = {
+					id: response.data.id,
+					nome: response.data.name,
+					email: response.data.email,
+					profile: response.data.profile
+				}
 
         Toast.show({
           type: 'success',
