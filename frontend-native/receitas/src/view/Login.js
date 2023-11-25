@@ -1,39 +1,36 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { TextInput, Button, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { useUserContext } from '../auth/UserContext.js';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 
 const apiUrl = "http://54.145.167.97/api";
 
 const LoginScreen = () => {
-  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
-  const { user, updateUser } = useUserContext();
 
   const handleLogin = async () => {
-		const url = `${apiUrl}/usuario/login`;
-		const data = {
-			email: email,
-			senha: password,
-		};
+    const url = `${apiUrl}/usuario/login`;
+    const data = {
+      email: email,
+      senha: password,
+    };
 
-		try {
-			const response = await axios.post(url, data);
+    try {
+      const response = await axios.post(url, data);
 
-			console.log('Resposta do servidor:', response.data);
+      console.log('Resposta do servidor:', response.data);
 
-			if (response.status === 200) {
-				const userInfo = {
-					id: response.data.id,
-					nome: response.data.nome,
-					email: response.data.email,
-					profile: response.data.profile
-				}
+      if (response.status === 200) {
+        const userInfo = {
+          id: response.data.id,
+          nome: response.data.nome,
+          email: response.data.email,
+          profile: response.data.profile,
+        };
 
         Toast.show({
           type: 'success',
@@ -41,26 +38,29 @@ const LoginScreen = () => {
           text2: 'Login realizado com sucesso',
         });
 
-				updateUser(userInfo);
-			}
+        // Atualize o contexto do usuário
+        // updateUser(userInfo);
 
-			setTimeout(() => {
+        setTimeout(() => {
+          navigation.navigate('Home');
+        }, 2000);
+      }
 
-        navigation.navigate('Home');
-			}, 2000);
-
-
-		} catch (error) {
+    } catch (error) {
       Toast.show({
         type: 'error',
-        text1: 'Erro, usuario não encontrado!',
-        text2: 'Usuario não encontrado, tente novamente.',
+        text1: 'Erro, usuário não encontrado!',
+        text2: 'Usuário não encontrado, tente novamente.',
       });
-			console.error('Falha na requisição:', error);
-		}
-    console.log('Email:', email);
-    console.log('Senha:', password);
+      console.error('Falha na requisição:', error);
+    }
   };
+
+  const handleSignup = () => {
+    // Navegue para a tela de cadastro
+    navigation.navigate('TelaCadastro');
+  };
+
   return (
     <View style={styles.container}>
       <Image
@@ -87,7 +87,12 @@ const LoginScreen = () => {
         Entrar
       </Button>
 
-      <Text style={styles.signupText}>Não tem uma conta? Cadastre-se</Text>
+      <Text
+        style={styles.signupText}
+        onPress={handleSignup}
+      >
+        Não tem uma conta? Cadastre-se
+      </Text>
     </View>
   );
 };

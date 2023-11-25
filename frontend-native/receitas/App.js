@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Login from './src/view/Login.js';
 import Home from './src/view/Home.js';
+import TelaCadastro from './src/view/TelaCadastro.js'
 import { UserContext, UserProvider } from './src/auth/UserContext.js';
 
 const Stack = createStackNavigator();
@@ -22,6 +23,11 @@ const App = () => {
           <Stack.Screen
             name="Home"
             component={Home}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="TelaCadastro"
+            component={TelaCadastro}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
