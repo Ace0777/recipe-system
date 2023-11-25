@@ -30,7 +30,7 @@ const LoginScreen = () => {
 			if (response.status === 200) {
 				const userInfo = {
 					id: response.data.id,
-					nome: response.data.nome,
+					nome: response.data.name,
 					email: response.data.email,
 					profile: response.data.profile
 				}
