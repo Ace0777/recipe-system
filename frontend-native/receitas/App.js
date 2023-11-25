@@ -26,15 +26,14 @@ const App = () => {
             component={Home}
             options={{ headerShown: false }}
           />
-
-
-
-
-
-
           <Stack.Screen
             name="CadastroReceita"
             component={CadastroReceita}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="TelaCadastro"
+            component={TelaCadastro}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

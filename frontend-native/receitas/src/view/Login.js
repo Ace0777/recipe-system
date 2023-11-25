@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { TextInput, Button, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { useUserContext } from '../auth/UserContext.js';  // Ajuste o caminho conforme necessário
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 
@@ -32,14 +33,13 @@ const LoginScreen = () => {
 					profile: response.data.profile
 				}
 
+        updateUser(userInfo);
+        
         Toast.show({
           type: 'success',
           text1: 'Sucesso',
           text2: 'Login realizado com sucesso',
         });
-
-        // Atualize o contexto do usuário
-        // updateUser(userInfo);
 
         setTimeout(() => {
           navigation.navigate('Home');
