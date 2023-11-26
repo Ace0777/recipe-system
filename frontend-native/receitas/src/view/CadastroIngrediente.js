@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import { Button, TextInput as PaperTextInput } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import { useUserContext } from '../auth/UserContext.js';
 import Notification from '../util/Notificacao.js';
 
 const apiUrl = 'http://54.145.167.97/api';
