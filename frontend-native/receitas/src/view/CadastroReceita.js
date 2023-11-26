@@ -3,6 +3,7 @@ import { View, ScrollView, StyleSheet, Image } from 'react-native';
 import { TextInput, Button, Text, Menu, Provider, Divider, Chip } from 'react-native-paper';
 import { useUserContext } from '../auth/UserContext.js';
 import { useNavigation } from '@react-navigation/native';
+import Notification from '../util/Notificacao.js';
 import axios from 'axios';
 
 const CadastroReceita = () => {
@@ -31,7 +32,7 @@ const CadastroReceita = () => {
             console.log('Requisição POST bem-sucedida');
             console.log('Resposta do servidor:', response.data);
 
-            //NOTIFICATION AQ
+            Notification.show("Receita cadastrada com sucesso!")
 
             setTimeout(() => {
                 navigation.navigate('Home');
@@ -83,7 +84,7 @@ const CadastroReceita = () => {
 
     useEffect(() => {
         if (user === undefined || user === null) {
-            //NOTIFICATION AQ
+            Notification.show("Usuario não autenticado, realize o login.")
 
             setTimeout(() => {
                 navigation.navigate('Login');

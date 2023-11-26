@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { useUserContext } from '../auth/UserContext.js';
 
 const Home = () => {
     const navigation = useNavigation();
-
+    const { user } = useUserContext();
+    
     const navigateToReceitas = () => {
         navigation.navigate('Receitas');
     };
@@ -17,6 +19,20 @@ const Home = () => {
     const navigateToCadastroIngrediente = () => {
         navigation.navigate('CadastroIngrediente');
     };
+
+    useEffect(() => {
+        if (user === undefined || user === null) {
+            Notification.show("Usuario não autenticado, realize o login.")
+
+            setTimeout(() => {
+                navigation.navigate('Login');
+            }, 1500);
+
+            return;
+        }
+
+        console.log(user);
+    }, []);
 
     return (
         <View style={styles.container}>

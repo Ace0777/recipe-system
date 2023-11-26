@@ -4,7 +4,7 @@ import { TextInput, Button, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useUserContext } from '../auth/UserContext.js';
 import axios from 'axios';
-
+import Notification from '../util/Notificacao.js';
 const apiUrl = "http://54.145.167.97/api";
 
 const LoginScreen = () => {
@@ -13,12 +13,17 @@ const LoginScreen = () => {
   const navigation = useNavigation();
   const { updateUser } = useUserContext();
 
+  function showToast() {
+    ToastAndroid.show('Request sent successfully!', ToastAndroid.SHORT);
+  }
+
   const handleLogin = async () => {
     const url = `${apiUrl}/usuario/login`;
     const data = {
       email: email,
       senha: password,
     };
+
 
     try {
       const response = await axios.post(url, data);
@@ -35,7 +40,7 @@ const LoginScreen = () => {
 
         updateUser(userInfo);
         
-        //NOTIFICATION AQ
+        Notification.show('Login realizado com sucesso!')
 
         setTimeout(() => {
           navigation.navigate('Home');
@@ -44,6 +49,7 @@ const LoginScreen = () => {
 
     } catch (error) {
       //NOTIFICATION AQ
+      Notification.show('Não foi possivel encontrar o usuario, tente novamente!')
       console.error('Falha na requisição:', error);
     }
   };

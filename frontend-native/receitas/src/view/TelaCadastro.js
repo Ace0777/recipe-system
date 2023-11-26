@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { TextInput, Button, Text } from 'react-native-paper';
+import Notification from '../util/Notificacao.js';
 import axios from 'axios';
 
 const apiUrl = "http://54.145.167.97/api";
@@ -24,16 +25,15 @@ const CadastroUsuario = ({ navigation }) => {
       console.log('Requisição POST bem-sucedida');
       console.log('Resposta do servidor:', response.data);
 
-      //NOTIFICATION AQ
-
+      Notification.show("Usuario cadastrado com sucesso!")
       setTimeout(() => {
         // Navegue para a tela de login após o cadastro
         navigation.navigate('Login');
       }, 2000);
 
     } catch (error) {
-      //NOTIFICATION AQ
-
+   
+      Notification.show("Erro no cadastro!")
       console.error('Falha na requisição:', error);
     }
   };
