@@ -23,6 +23,7 @@
     "react-native-paper": "^5.11.1",
     "react-native-root-toast": "^3.5.1",
     "react-native-toast-message": "^2.1.7",
+    "react-native-vector-icons": "^10.0.2",
     "react-native-web": "~0.19.6"
   },
   "devDependencies": {

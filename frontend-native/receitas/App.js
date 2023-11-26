@@ -8,7 +8,8 @@ import Home from './src/view/Home.js';
 import TelaCadastro from './src/view/TelaCadastro.js'
 import { UserContext, UserProvider } from './src/auth/UserContext.js';
 import CadastroReceita from './src/view/CadastroReceita.js';
-
+import CadastroIngrediente from './src/view/CadastroIngrediente.js';
+import Receitas from './src/view/Receitas.js';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -36,6 +37,16 @@ const App = () => {
             name="TelaCadastro"
             component={TelaCadastro}
             options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="CadastroIngrediente"
+            component={CadastroIngrediente}
+            options={{ headerShown: false }}
+          />
+            <Stack.Screen
+            name="Receitas"
+            component={Receitas}
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
       </UserProvider>
