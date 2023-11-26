@@ -2,7 +2,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import { ToastProvider } from 'react-native-fast-toast'
 import Login from './src/view/Login.js';
 import Home from './src/view/Home.js';
 import TelaCadastro from './src/view/TelaCadastro.js'
@@ -15,6 +15,7 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
+      <ToastProvider>
       <UserProvider>
         <Stack.Navigator initialRouteName="login">
           <Stack.Screen
@@ -49,6 +50,7 @@ const App = () => {
           />
         </Stack.Navigator>
       </UserProvider>
+      </ToastProvider>
     </NavigationContainer>
   );
 };

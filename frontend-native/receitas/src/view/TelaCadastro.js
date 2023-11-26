@@ -10,6 +10,7 @@ const CadastroUsuario = ({ navigation }) => {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const notification = Notification();
 
   const handleCadastro = async () => {
     const url = `${apiUrl}/usuario`;
@@ -25,7 +26,7 @@ const CadastroUsuario = ({ navigation }) => {
       console.log('Requisição POST bem-sucedida');
       console.log('Resposta do servidor:', response.data);
 
-      Notification.show("Usuario cadastrado com sucesso!")
+      notification.show("Usuario cadastrado com sucesso!")
       setTimeout(() => {
         // Navegue para a tela de login após o cadastro
         navigation.navigate('Login');
@@ -33,7 +34,7 @@ const CadastroUsuario = ({ navigation }) => {
 
     } catch (error) {
    
-      Notification.show("Erro no cadastro!")
+      notification.show("Erro no cadastro!")
       console.error('Falha na requisição:', error);
     }
   };

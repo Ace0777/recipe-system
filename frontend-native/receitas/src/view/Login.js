@@ -12,10 +12,8 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
   const { updateUser } = useUserContext();
+  const notification = Notification();
 
-  function showToast() {
-    ToastAndroid.show('Request sent successfully!', ToastAndroid.SHORT);
-  }
 
   const handleLogin = async () => {
     const url = `${apiUrl}/usuario/login`;
@@ -40,16 +38,16 @@ const LoginScreen = () => {
 
         updateUser(userInfo);
         
-        Notification.show('Login realizado com sucesso!')
+        notification.show('Login realizado com sucesso!')
 
         setTimeout(() => {
           navigation.navigate('Home');
-        }, 2000);
+        }, 1000);
       }
 
     } catch (error) {
       //NOTIFICATION AQ
-      Notification.show('Não foi possivel encontrar o usuario, tente novamente!')
+      notification.show('Não foi possivel encontrar o usuario, tente novamente!')
       console.error('Falha na requisição:', error);
     }
   };
