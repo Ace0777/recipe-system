@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Card, Title, IconButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -9,7 +9,7 @@ const Home = () => {
   const navigation = useNavigation();
   const { user, updateUser } = useUserContext();
   const notification = Notification();
-
+  const [profile, setProfile] = useState('');
   const navigateToReceitas = () => {
     navigation.navigate('Receitas');
   };
@@ -48,6 +48,12 @@ const Home = () => {
       return;
     }
 
+    if (user.profile === 'ADM') {
+      setProfile('ADM')
+    } else {
+      setProfile('FUNC')
+    }
+    console.log
     console.log(user);
   }, []);
 
@@ -99,7 +105,7 @@ const Home = () => {
         </Card.Content>
       </Card>
 
-      <Card onPress={navigateToDashboard} style={[styles.card, { backgroundColor: '#FFB00A' }]} disabled={user.profile !== 'ADM'}>
+      <Card onPress={navigateToDashboard} style={[styles.card, { backgroundColor: '#FFB00A' }]} disabled={profile !== 'ADM'}>
         <Card.Content>
           <View style={styles.contentContainer}>
             <IconButton

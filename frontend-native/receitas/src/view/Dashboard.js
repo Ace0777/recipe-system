@@ -5,6 +5,7 @@ import { BarChart } from 'react-native-chart-kit';
 import { useUserContext } from '../auth/UserContext.js';
 import { useNavigation } from '@react-navigation/native';
 import Notification from '../util/Notificacao.js';
+import Icon from 'react-native-vector-icons/AntDesign';
 import axios from 'axios';
 
 const Dashboard = () => {
@@ -14,7 +15,9 @@ const Dashboard = () => {
     const apiUrl = "http://54.145.167.97/api";
 
     const [quantidadeReceitas, setQuantidadeReceitas] = useState(0);
+    const [quantidadeMinhasReceitas, setQuantidadeMinhasReceitas] = useState(0);
     const [quantidadeIngredientes, setQuantidadeIngredientes] = useState(0);
+    const [quantidadeUsuarios, setQuantidadeUsuarios] = useState(0);
     const [receitaMaisCurtida, setReceitaMaisCurtida] = useState(null);
 
     const buscaQuantidadeReceitas = async () => {
@@ -38,6 +41,27 @@ const Dashboard = () => {
             console.error('Falha na requisição:', error);
         }
     };
+     
+    const buscaQuantidadeMinhasReceitas = async () => {
+        let url = `${apiUrl}/receita/usuario/${user.id}`;
+        try {
+          const response = await axios.get(url);
+          setQuantidadeMinhasReceitas(response.data.$values.length);
+        } catch (error) {
+          console.error('Falha na requisição:', error);
+        }
+      };
+
+      const buscaQuantidadeUsuarios = async () => {
+        let url = `${apiUrl}/usuario`;
+        try {
+          const response = await axios.get(url);
+          setQuantidadeUsuarios(response.data.$values.length);
+        } catch (error) {
+          console.error('Falha na requisição:', error);
+        }
+      };
+   
 
     const buscaReceitaMaisCurtida = async () => {
         let url = `${apiUrl}/receita`;
@@ -74,6 +98,8 @@ const Dashboard = () => {
         buscaQuantidadeReceitas();
         buscaQuantidadeIngredientes();
         buscaReceitaMaisCurtida();  
+        buscaQuantidadeMinhasReceitas();
+        buscaQuantidadeUsuarios();
     }, []);
 
     const data = {
@@ -87,7 +113,7 @@ const Dashboard = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>DADOS ATUALIZADOS</Text>
+            <Text style={styles.title} ><Icon name="areachart" size={24} /> informações do sistema</Text>
 
             <BarChart
                 style={styles.chart}
@@ -104,9 +130,11 @@ const Dashboard = () => {
                 }}
             />
 
-            <Text style={styles.text}>Total de Receitas: {quantidadeReceitas}</Text>
-            <Text style={styles.text}>Total de Ingredientes: {quantidadeIngredientes}</Text>
-            <Text style={styles.text}>Receita mais curtida: {receitaMaisCurtida?.nome}</Text>
+            <Text style={styles.text}><Text style={{fontWeight:'bold'}}>Total de Receitas:</Text> {quantidadeReceitas}</Text>
+            <Text style={styles.text}><Text style={{fontWeight:'bold'}}>Total de Ingredientes:</Text> {quantidadeIngredientes}</Text>
+            <Text style={styles.text}><Text style={{fontWeight:'bold'}}>Receita mais curtida:</Text> {receitaMaisCurtida?.nome}</Text>
+            <Text style={styles.text}><Text style={{fontWeight:'bold'}}>Total de receitas cadastradas por mim:</Text> {quantidadeMinhasReceitas}</Text>
+            <Text style={styles.text}><Text style={{fontWeight:'bold'}}>Quantidade de usuarios cadastrados na plataforma:</Text> {quantidadeUsuarios}</Text>
         </View>
     );
 };
@@ -127,7 +155,7 @@ const styles = StyleSheet.create({
     },
     text: {
         marginTop: 15,
-        fontSize: 10
+        fontSize: 13,
     },
 });
 

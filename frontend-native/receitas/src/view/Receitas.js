@@ -79,6 +79,17 @@ const TelaPrincipal = () => {
         }
     };
 
+    const buscaTodasReceitasUser = async () => {
+        let url = `${apiUrl}/receita/usuario/${user.id}`;
+        try {
+          const response = await axios.get(url);
+          setReceitas(response.data.$values);
+        } catch (error) {
+          console.error('Falha na requisição:', error);
+        }
+      };
+    
+
     const handleEditFormSubmit = async () => {
         try {
             const url = `${apiUrl}/receita/${receitaSelecionada.id}`;
@@ -111,6 +122,7 @@ const TelaPrincipal = () => {
 
         buscaTodasReceitas();
     }, []);
+
 
     const handleCurtir = async (id) => {
         try {
@@ -173,6 +185,17 @@ const TelaPrincipal = () => {
                     marginBottom: 35,
                     color: 'black',
                 }}>Receitas da comunidade</Title>
+
+                <View style={{marginBottom: 10}}>
+                    <Button
+                        icon={() => <Icon name="inbox" size={24} />}
+                        mode="contained"
+                        onPress={() => buscaTodasReceitasUser()}
+                    >
+                        Visualizar minhas receitas
+                    </Button>
+                </View>
+
 
                 <View style={styles.searchBar}>
                     <TextInput
