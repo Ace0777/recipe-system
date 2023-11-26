@@ -1,10 +1,14 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { useUserContext } from '../auth/UserContext.js';
+import Notification from '../util/Notificacao.js';
+
 
 const Home = () => {
     const navigation = useNavigation();
+    const { user, updateUser } = useUserContext();
 
     const navigateToReceitas = () => {
         navigation.navigate('Receitas');
@@ -72,6 +76,14 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 35,
     },
+    logoutButton: {
+        position: 'absolute',
+        bottom: 20,
+        right: 20,
+        backgroundColor: 'red',
+        borderRadius: 50,
+        padding: 15,
+      },
 });
 
 export default Home;
