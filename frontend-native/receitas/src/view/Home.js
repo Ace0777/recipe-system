@@ -14,6 +14,10 @@ const Home = () => {
     navigation.navigate('Receitas');
   };
 
+  const navigateToDashboard = () => {
+    navigation.navigate('Dashboard');
+  };
+
   const navigateToCadastroReceita = () => {
     navigation.navigate('CadastroReceita');
   };
@@ -91,6 +95,19 @@ const Home = () => {
               style={styles.icon}
             />
             <Title>Cadastrar novo ingrediente</Title>
+          </View>
+        </Card.Content>
+      </Card>
+
+      <Card onPress={navigateToDashboard} style={[styles.card, { backgroundColor: '#FFB00A' }]} disabled={user.profile !== 'ADM'}>
+        <Card.Content>
+          <View style={styles.contentContainer}>
+            <IconButton
+              icon="information-variant"
+              color="white"
+              style={styles.icon}
+            />
+            <Title>Informações do sistema</Title>
           </View>
         </Card.Content>
       </Card>

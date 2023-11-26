@@ -10,6 +10,7 @@ import { UserContext, UserProvider } from './src/auth/UserContext.js';
 import CadastroReceita from './src/view/CadastroReceita.js';
 import CadastroIngrediente from './src/view/CadastroIngrediente.js';
 import Receitas from './src/view/Receitas.js';
+import Dashboard from './src/view/Dashboard.js';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -46,6 +47,11 @@ const App = () => {
             <Stack.Screen
             name="Receitas"
             component={Receitas}
+            options={{ headerShown: true }}
+          />
+            <Stack.Screen
+            name="Dashboard"
+            component={Dashboard}
             options={{ headerShown: true }}
           />
         </Stack.Navigator>
