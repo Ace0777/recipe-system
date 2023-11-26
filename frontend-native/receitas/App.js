@@ -29,12 +29,12 @@ const App = () => {
           <Stack.Screen
             name="CadastroReceita"
             component={CadastroReceita}
-            options={{ headerShown: false }}
+            options={{ headerShown: true }}
           />
           <Stack.Screen
             name="TelaCadastro"
             component={TelaCadastro}
-            options={{ headerShown: false }}
+            options={{ headerShown: true }}
           />
         </Stack.Navigator>
       </UserProvider>
