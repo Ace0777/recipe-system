@@ -46,14 +46,14 @@ const LoginScreen = () => {
       }
 
     } catch (error) {
-      //NOTIFICATION AQ
+    
       notification.show('Não foi possivel encontrar o usuario, tente novamente!')
       console.error('Falha na requisição:', error);
     }
   };
 
   const handleSignup = () => {
-    // Navegue para a tela de cadastro
+    
     navigation.navigate('TelaCadastro');
   };
 

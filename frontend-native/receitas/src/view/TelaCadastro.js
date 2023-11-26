@@ -28,7 +28,7 @@ const CadastroUsuario = ({ navigation }) => {
 
       notification.show("Usuario cadastrado com sucesso!")
       setTimeout(() => {
-        // Navegue para a tela de login após o cadastro
+        
         navigation.navigate('Login');
       }, 2000);
 

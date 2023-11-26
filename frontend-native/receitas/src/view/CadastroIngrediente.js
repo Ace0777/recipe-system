@@ -3,12 +3,14 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import { Button, TextInput as PaperTextInput } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import Notification from '../util/Notificacao.js';
 
 const apiUrl = 'http://54.145.167.97/api';
 
 const CadastroIngrediente = () => {
   const navigation = useNavigation();
-
+  const notification = Notification();
+  const { user, updateUser } = useUserContext();
   const [nome, setNome] = useState('');
   const [quantidade, setQuantidade] = useState(1);
 
@@ -35,6 +37,20 @@ const CadastroIngrediente = () => {
     setQuantidade(1);
   };
 
+  useEffect(() => {
+    if (user === undefined || user === null) {
+      notification.show('Usuario não autenticado, realize o login.');
+
+      setTimeout(() => {
+        navigation.navigate('Login');
+      }, 1500);
+
+      return;
+    }
+
+    console.log(user);
+  }, []);
+
   const handleSubmit = async () => {
     if (nome && quantidade) {
       const novoIngrediente = {
@@ -49,12 +65,12 @@ const CadastroIngrediente = () => {
         console.log('Requisição POST bem-sucedida');
         console.log('Resposta do servidor:', response.data);
 
-        // Utilize o método navigate para ir para a tela desejada após o sucesso
-        navigation.navigate('TelaSucessoCadastro');
+        notification.show('Ingrediente cadastrado com sucesso!')
       } catch (error) {
+        notification.show('Erro ao cadastrar ingrediente')
         console.error('Falha na requisição:', error);
       }
-      handleLimparCampos(); // Limpa os campos após o envio
+      handleLimparCampos();
     }
   };
 

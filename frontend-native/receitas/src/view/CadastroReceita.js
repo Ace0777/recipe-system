@@ -9,7 +9,7 @@ import axios from 'axios';
 const CadastroReceita = () => {
     const [nome, setNome] = useState('');
     const [descricao, setDescricao] = useState('');
-    const [ingredientes, setIngredientes] = useState([]); // Substitua isso pelo seu array de ingredientes
+    const [ingredientes, setIngredientes] = useState([]);
     const [selectedIngredientes, setSelectedIngredientes] = useState([]);
     const [idsSelecionados, setIdsSelecionados] = useState([]);
     const [menuVisible, setMenuVisible] = useState(false);
@@ -116,14 +116,14 @@ const CadastroReceita = () => {
                     value={nome}
                     onChangeText={(text) => setNome(text)}
                     style={styles.input}
-                    theme={{ colors: { primary: 'black' } }} // Cor do texto do input
+                    theme={{ colors: { primary: 'black' } }}
                 />
                 <TextInput
                     label="Descrição"
                     value={descricao}
                     onChangeText={(text) => setDescricao(text)}
                     style={styles.input}
-                    theme={{ colors: { primary: 'black' } }} // Cor do texto do input
+                    theme={{ colors: { primary: 'black' } }}
                 />
 
                 <Menu
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         padding: 16,
-        backgroundColor: '#fff', // Cor de fundo do componente
+        backgroundColor: '#fff',
     },
     title: {
         fontSize: 24,
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     },
     input: {
         marginBottom: 8,
-        backgroundColor: '#f5f5f5', // Cor de fundo do input
+        backgroundColor: '#f5f5f5',
     },
     button: {
         marginTop: 16,
