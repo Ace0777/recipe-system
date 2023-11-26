@@ -108,7 +108,7 @@ const CadastroReceita = () => {
                     source={require('../img/food_icon.png')}
                     style={styles.logo}
                 />
-                <Text style={styles.title}>Cadastre uma receita:</Text>
+                <Text style={styles.title}>Cadastro Receita:</Text>
                 <TextInput
                     label="Nome"
                     value={nome}

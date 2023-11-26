@@ -15,9 +15,11 @@ const Home = () => {
     };
 
     const navigateToCadastroIngrediente = () => {
+        console.log('Navigate to CadastroIngrediente');
         navigation.navigate('CadastroIngrediente');
     };
 
+      
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Selecione uma opção:</Text>
@@ -43,6 +45,8 @@ const Home = () => {
             >
                 Cadastrar novo ingrediente
             </Button>
+           
+           
         </View>
     );
 };
