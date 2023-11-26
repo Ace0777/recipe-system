@@ -1,13 +1,21 @@
-import { ToastAndroid } from 'react-native';
+import React from 'react';
+import { useToast } from 'react-native-fast-toast';
 
-class Notification {
-  static show(message) {
-    ToastAndroid.show(message, ToastAndroid.SHORT);
-  }
+const Notification = () => {
+  const toast = useToast();
 
-  static showLong(message) {
-    ToastAndroid.show(message, ToastAndroid.LONG);
-  }
-}
+  const show = (message) => {
+    toast.show(message);
+  };
+
+  const showLong = (message) => {
+    toast.show(message, { duration: 4000 });
+  };
+
+  return {
+    show,
+    showLong,
+  };
+};
 
 export default Notification;

@@ -14,6 +14,7 @@ const CadastroReceita = () => {
     const [idsSelecionados, setIdsSelecionados] = useState([]);
     const [menuVisible, setMenuVisible] = useState(false);
     const [nomeIngredientesSelecionados, setNomeIngredientes] = useState("");
+    const notification = Notification();
     const navigation = useNavigation();
     const { user } = useUserContext();
     const apiUrl = "http://54.145.167.97/api";
@@ -32,7 +33,7 @@ const CadastroReceita = () => {
             console.log('Requisição POST bem-sucedida');
             console.log('Resposta do servidor:', response.data);
 
-            Notification.show("Receita cadastrada com sucesso!")
+            notification.show("Receita cadastrada com sucesso!")
 
             setTimeout(() => {
                 navigation.navigate('Home');
@@ -84,7 +85,7 @@ const CadastroReceita = () => {
 
     useEffect(() => {
         if (user === undefined || user === null) {
-            Notification.show("Usuario não autenticado, realize o login.")
+            notification.show("Usuario não autenticado, realize o login.")
 
             setTimeout(() => {
                 navigation.navigate('Login');
