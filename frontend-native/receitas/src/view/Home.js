@@ -19,33 +19,11 @@ const Home = () => {
     };
 
     const navigateToCadastroIngrediente = () => {
+        console.log('Navigate to CadastroIngrediente');
         navigation.navigate('CadastroIngrediente');
     };
 
-    const handleLogout = () => {    
-        updateUser(null);
-    
-        setTimeout(() => {
-            Notification.show("Usuario deslogado com sucesso! redirecionando...")
-        }, 1500);
-
-        navigation.navigate('Login');
-      };
-
-    useEffect(() => {
-        if (user === undefined || user === null) {
-            Notification.show("Usuario não autenticado, realize o login.")
-
-            setTimeout(() => {
-                navigation.navigate('Login');
-            }, 1500);
-
-            return;
-        }
-
-        console.log(user);
-    }, []);
-
+      
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Selecione uma opção:</Text>
@@ -71,14 +49,8 @@ const Home = () => {
             >
                 Cadastrar novo ingrediente
             </Button>
-
-            <TouchableOpacity
-                style={styles.logoutButton}
-                onPress={handleLogout}
-            >
-                <Text>Sair</Text>
-            </TouchableOpacity>
-
+           
+           
         </View>
     );
 };
