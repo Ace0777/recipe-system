@@ -3,6 +3,8 @@ import { View, ScrollView, Modal, Dimensions, SafeAreaView } from 'react-native'
 import { Button, Card, Title, Paragraph, TextInput, Checkbox  } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/AntDesign';
 import axios from 'axios';
+import { useUserContext } from '../auth/UserContext.js';
+import Notification from '../util/Notificacao.js';
 
 const { width } = Dimensions.get('window');
 
@@ -17,6 +19,8 @@ const TelaPrincipal = () => {
     const [ingredientesSelecionadosInts, setIngredientesSelecionadosInts] = useState([]);
     const [nomeReceita, setNomeReceita] = useState('');
     const [descricaoReceita, setDescricaoReceita] = useState('');
+    const { user, updateUser } = useUserContext();
+    const notification = Notification();
 
     const buscaTodasReceitas = async () => {
         let url = `${apiUrl}/receita`;
@@ -86,13 +90,25 @@ const TelaPrincipal = () => {
 
             await axios.put(url, data);
             setIsModalVisible(false);
+            notification.show('Receita editada com sucesso!')
             buscaTodasReceitas();
         } catch (error) {
+            notification.show('Erro ao editar a receita')
             console.error('Falha ao atualizar a receita:', error);
         }
     };
 
     useEffect(() => {
+        if (user === undefined || user === null) {
+            notification.show('Usuario não autenticado, realize o login.');
+      
+            setTimeout(() => {
+              navigation.navigate('Login');
+            }, 1500);
+      
+            return;
+          }
+
         buscaTodasReceitas();
     }, []);
 
@@ -101,10 +117,11 @@ const TelaPrincipal = () => {
             const url = `${apiUrl}/receita/curtidas/${id}`;
 
             await axios.patch(url);
+            notification.show('Receita curtida!')
             buscaTodasReceitas();
         } catch (error) {
+            notification.show('Falha ao curtir a receita!')
             console.error('Falha ao curtir a receita:', error);
-            // message.error(`Curtir ${id}`); // Se você estiver usando algum componente de mensagem, descomente esta linha
         }
     };
 
@@ -116,7 +133,6 @@ const TelaPrincipal = () => {
             buscaTodasReceitas();
         } catch (error) {
             console.error('Falha ao excluir a receita:', error);
-            // message.error(`Excluir ${id}`); // Se você estiver usando algum componente de mensagem, descomente esta linha
         }
     };
 
@@ -150,23 +166,6 @@ const TelaPrincipal = () => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.container}>
-                <View style={styles.buttonContainer}>
-                    <Button
-                        mode="contained"
-                        onPress={() => console.log('Cadastrar Ingrediente')}
-                        style={{ ...styles.button, marginRight: 10 }}
-                    >
-                        Cadastrar Ingrediente
-                    </Button>
-                    <Button
-                        mode="contained"
-                        onPress={() => console.log('Cadastrar Receita')}
-                        style={{ ...styles.button, marginLeft: 10 }}
-                    >
-                        Cadastrar Receita
-                    </Button>
-                </View>
-
                 <Title style={{
                     fontSize: 24,
                     fontWeight: 'bold',
@@ -200,9 +199,9 @@ const TelaPrincipal = () => {
                                 <Paragraph>{receita.descricao}</Paragraph>
                             </Card.Content>
                             <Card.Actions style={{ justifyContent: 'space-between' }}>
-                                <Button onPress={() => handleEditar(receita)}>Editar</Button>
-                                <Button onPress={() => handleCurtir(receita.id)}>{` ${receita.curtidas}`}</Button>
-                                <Button onPress={() => handleExcluir(receita.id)}>Excluir</Button>
+                                <Button onPress={() => handleEditar(receita)} disabled={user.profile !== 'ADM' && user.id !== receita.usuarioId }>Editar</Button>
+                                <Button onPress={() => handleCurtir(receita.id)}>{`Like ${receita.curtidas}`}</Button>
+                                <Button onPress={() => handleExcluir(receita.id)} disabled={user.profile !== 'ADM' && user.id !== receita.usuarioId }>Excluir</Button>
                             </Card.Actions>
                         </Card>
                     ))}

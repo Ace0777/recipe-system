@@ -41,12 +41,12 @@ const App = () => {
           <Stack.Screen
             name="CadastroIngrediente"
             component={CadastroIngrediente}
-            options={{ headerShown: false }}
+            options={{ headerShown: true }}
           />
             <Stack.Screen
             name="Receitas"
             component={Receitas}
-            options={{ headerShown: false }}
+            options={{ headerShown: true }}
           />
         </Stack.Navigator>
       </UserProvider>
